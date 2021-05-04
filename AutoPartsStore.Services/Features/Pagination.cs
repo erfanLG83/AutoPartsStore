@@ -32,6 +32,7 @@ namespace AutoPartsStore.Services.Features
             NextText = nextText;
             PreviousText = previousText;
         }
+
         public Pagination(IUrlHelper urlHelper, int pageCount, int selectedIndex, int row, string page, string nextText = null, string previousText = null, string ulClasses = "")
         {
             UrlHelper = urlHelper;

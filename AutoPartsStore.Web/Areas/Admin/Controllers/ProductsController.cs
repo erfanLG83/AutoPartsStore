@@ -6,7 +6,7 @@ using AutoPartsStore.Services.Contract;
 using AutoPartsStore.Services.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using PrgHome.DataLayer.Repository;
+using AutoPartsStore.Domain.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

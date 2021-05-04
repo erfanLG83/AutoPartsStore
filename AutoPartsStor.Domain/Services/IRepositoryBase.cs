@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace PrgHome.DataLayer.Repository
+namespace AutoPartsStore.Domain.Services
 {
     public interface IRepositoryBase<TEntity> where TEntity:class
     {

@@ -1,0 +1,183 @@
+﻿@model IEnumerable<AutoPartsStore.Infrastructure.Admin.Categories.CategoriesIndexViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p id="modal-text"></p>
+                <div id="modal-form" class="d-none row">
+                    <h3 class="col-12">افزودن دسته بندی</h3>
+                    <div class="col-12 form-group">
+                        <label>نام دسته بندی</label>
+                        <input class="form-control" type="text" placeholder="نام دسته بندی را وارد کنید" />
+                        <span class="text-danger text-sm"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" onclick="modalConfirm()" class="btn btn-danger">تایید</button>
+                <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">لغو</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">دسته بندی ها</h3>
+            <a href="#" onclick="showModal('create')" class="btn btn-outline-primary mt-3 mr-2">افزودن دسته بندی</a>
+        </div>
+        <div class="table-responsive">
+            <table id="CategoriesTB" class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">نام</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr data-row-id="@item.Id">
+                            <td>@item.Row</td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                <a class="mr-0 btn-sm btn btn-primary" onclick="showModal('edit',@item.Id)"  href="#">ویرایش</a>
+                                <a class="mr-0 btn-sm btn btn-danger" onclick="showModal('delete',@item.Id,'@item.Title')" href="#">حذف</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer py-4">
+            <nav aria-label="...">
+                <partial name="_PaginationPartial" model="ViewBag.Pagination" />
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        let confirmId = null;
+        let state = 'create';
+        const showModal = (type, id = null, name = null) => {
+            if (type === 'create') {
+                $('#modal-form>h3').html('افزودن دسته بندی');
+                $('#modal-form input').val('');
+                $('#modal-form').removeClass('d-none');
+                $('#modal').modal();
+                state = 'create';
+            }
+            else if (type === 'delete') {
+                confirmId = id;
+                $('#modal-form').addClass('d-none');
+                state = 'delete';
+                $('#modal-text').html(`
+                    از حذف دسته بندی '${name}' مطمئن هستید ؟؟
+                    `);
+                $('#modal').modal();
+            }
+            else if (type === 'edit') {
+                const text = $(`#CategoriesTB tr[data-row-id='${id}'] td:nth-child(2)`).html();
+                $('#modal-form>h3').html(`ویرایش دسته بندی '${text}'`);
+                $('#modal-form input').val(text.trim());
+                $('#modal-form').removeClass('d-none');
+                $('#modal').modal();
+                confirmId = id;
+                state = 'edit';
+            }
+        };
+        const modalConfirm = () => {
+            if (state === 'create') {
+                const value = $('#modal-form input').val();
+                if (value === "")
+                    $('#modal-form span').html('نام دسته بندی را وارد کنید');
+                else {
+                    fetch('/admin/categories/create?name=' + value)
+                        .then(response => response.json())
+                        .then(data => {
+                            const lastRow = document.querySelector('#CategoriesTB tbody tr:last-child td:first-child');
+                            let row;
+                            if (lastRow === null || lastRow === undefined)
+                                row = 1
+                            else
+                                row = Number(lastRow.innerHTML) + 1;
+                            document
+                                .querySelector('#CategoriesTB tbody')
+                                .innerHTML += `
+                                <tr data-row-id="${data.id}">
+                                    <td>${row}</td>
+                                    <td>
+                                        ${value}
+                                    </td>
+                                    <td>
+                                        <a class="mr-0 btn-sm btn btn-primary" onclick="showModal('edit',${data.id})"  href="#">ویرایش</a>
+                                        <a class="mr-0 btn-sm btn btn-danger" onclick="showModal('delete',${data.id},'${value}')" href="#">حذف</a>
+                                    </td>
+                                </tr>`;
+                        }).catch(err => console.log(err))
+                        .finally(() => {
+                            $('#modal').modal('hide');
+                        });
+                }
+            }
+            else if (state === 'delete') {
+                fetch('/admin/categories/delete/' + confirmId, { method: "delete" })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            $(`#CategoriesTB tr[data-row-id='${confirmId}']`).remove();
+                        }
+                        else
+                            alert('دسته بندی پیدا نشده !');
+                    })
+                    .catch(err => console.log(err))
+                    .finally(() => {
+                        $('#modal').modal('hide');
+                    });
+            }
+            else if (state === 'edit') {
+                const value = $('#modal-form input').val();
+                if (value === "")
+                    $('#modal-form span').html('نام دسته بندی را وارد کنید');
+                else {
+                    fetch('/admin/categories/edit/' + confirmId + '?name=' + value,
+                    )
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success)
+                                $(`#CategoriesTB tbody tr[data-row-id='${confirmId}'] td:nth-child(2)`).html(value);
+                            else
+                                alert('نام دسته بندی را وارد کنید !');
+                        })
+                        .catch(err => {
+                            console.log(err);
+                        })
+                        .finally(() => {
+                            $('#modal').modal('hide');
+                        });
+                }
+            }
+        }
+    </script>
+}
