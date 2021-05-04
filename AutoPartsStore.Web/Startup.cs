@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoPartsStore.Persistence;
+using AutoPartsStore.Services.Contract;
+using AutoPartsStore.Services.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,8 +22,12 @@ namespace AutoPartsStore.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(op=>
+            services.AddDbContext<ApplicationDbContext>(op =>
                 op.UseSqlServer(@"Server=.;Database=AutoPartsStoreDB;trusted_Connection=True"));
+            services.AddSingleton<IFileWorker, FileWorker>(n=> {
+                var env = n.GetRequiredService<IWebHostEnvironment>();
+                return new FileWorker(env.WebRootPath);
+            });
             services.AddControllersWithViews();
         }
 
@@ -55,10 +56,9 @@ namespace AutoPartsStore.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapAreaControllerRoute(
-                    name:"Admin",
-                    areaName:"Admin",
-                    "admin/{controller=Dashboard}/{action=Index}/{id?}"
+                endpoints.MapControllerRoute(
+                    name:"areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                     );
             });
         }

@@ -1,0 +1,130 @@
+﻿@model IEnumerable<AutoPartsStore.Infrastructure.Admin.Products.ProductsIndexViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" onclick="deleteProduct()" class="btn btn-danger">حذف</button>
+                <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">خیر</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">سفارشات</h3>
+            <a href="/admin/products/create" class="btn btn-outline-primary mt-3 mr-2">افزودن محصول</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">محصول</th>
+                        <th scope="col">دسته بندی</th>
+                        <th scope="col">قیمت</th>
+                        <th scope="col">تعداد موجود</th>
+                        <th scope="col">منشتر شده ؟</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr data-row-id="@item.Id">
+                            <td>@item.Row</td>
+                            <td scope="row">
+                                <div class="media align-items-center">
+                                    <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder" src="@(item.ImageName == null ? "/img/theme/angular.jpg" : "/img/"+item.ImageName)">
+                                    </a>
+                                    <div class="media-body">
+                                        <span class="mb-0 text-sm">@item.Name</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@item.CategoryTitle</td>
+                            <td>@item.Price (ریال)</td>
+                            <td>
+                                @item.Stock
+                            </td>
+                            <td class="text-center text-danger">
+                                @if (item.IsPublish)
+                                {
+                                    <span class="badge badge-success">
+                                        منتشر شده
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-warning">
+                                        منتشر نشده
+                                    </span>
+                                }
+                            </td>
+                            <td>
+                                <a class="mr-0 btn-sm btn btn-info" href="/admin/products/details/@item.Id">جزئیات</a>
+                                <a class="mr-0 btn-sm btn btn-primary" href="/admin/products/edit/@item.Id">ویرایش</a>
+                                <a class="mr-0 btn-sm btn btn-danger" href="#" onclick="showModal(@item.Id ,'@Html.Raw(item.Name)')">حذف</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer py-4">
+            <nav aria-label="...">
+                <partial name="_PaginationPartial" model="ViewBag.Pagination" />
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+    <script>
+        let confirmId = null;
+        const showModal = (id, name) => {
+            $('#modal-default .modal-body p').html(`
+                    از حذف محصول '${name}' مطمئن هستید ؟
+                    <br/>
+                    این عمل غیر قابل بازگشت است.
+                `);
+            confirmId = id;
+            $('#modal-default').modal();
+        }
+        const deleteProduct = () => {
+            const id = confirmId;
+            fetch('/admin/products/delete/' + id, {method:"DELETE"})
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success)
+                        $(`tr[data-row-id='${id}']`).remove();
+                    else
+                        alert('مشکلی هنگام درخواست به سرور پیش امد !');
+                })
+                .catch(err => console.log(err))
+                .finally(() => {
+                    $('#modal-default').modal('hide');
+                });
+        }
+    </script>
+}

@@ -1,0 +1,69 @@
+﻿@model AutoPartsStore.Infrastructure.Admin.Products.ProductEditDTO
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">ویرایش محصول</h3>
+        </div>
+        <div class="card-body">
+            <form enctype="multipart/form-data" action="/admin/products/edit" method="post">
+                <input type="hidden" asp-for="Id"/>
+                <div class="row">
+                    <div class="col-12 text-danger" asp-validation-summary="All">
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Title">عنوان</label>
+                        <input asp-for="Title" type="text" class="form-control" placeholder="عنوان محصول را وارد کنید" />
+                        <span class="text-danger" asp-validation-for="Title"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="CategoryId">دسته بندی</label>
+                        <select asp-items="ViewBag.Categories" asp-for="CategoryId" class="form-control">
+                        </select>
+                        <span class="text-danger" asp-validation-for="CategoryId"></span>
+                    </div>
+                    <div class=" form-group col-md-6">
+                        <label asp-for="Price">قیمت به ریال</label>
+                        <input asp-for="Price" type="number" id="num" class="form-control" placeholder="قیمت محصول را وارد کنید" />
+                        <span class="text-danger" asp-validation-for="Price"></span>
+                    </div>
+                    <div class=" form-group col-md-6">
+                        <label asp-for="Stock">تعداد موجود</label>
+                        <input asp-for="Stock" type="number" class="form-control" placeholder="تعداد محصول موجود را وارد کنید" />
+                        <span class="text-danger" asp-validation-for="Stock"></span>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label asp-for="Description">توضیح خلاصه</label>
+                        <textarea asp-for="Description" class="form-control" placeholder="توضیح خلاصه محصول را وارد کنید" cols="30" rows="10"></textarea>
+                        <span class="text-danger" asp-validation-for="Description"></span>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label asp-for="EditImage">تصویر</label>
+                        <input asp-for="EditImage" class=" form-control" type="file">
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="custom-control mr-2 col-md-6 custom-checkbox">
+                        <input asp-for="IsPublish" type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label mr--1" asp-for="IsPublish">انتشار محصول</label>
+                    </div>
+                    <div class=" col-md-6">
+                        <button type="submit" class="btn btn-success float-left">
+                            ثبت
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -6,11 +6,13 @@ namespace AutoPartsStore.Infrastructure.Admin.Products
 {
     public class ProductsIndexViewModel
     {
+        public int Row { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public string CategoryTitle { get; set; }
         public int Stock { get; set; }
         public long Price { get; set; }
         public string ImageName { get; set; }
+        public bool IsPublish { get; set; }
     }
 }

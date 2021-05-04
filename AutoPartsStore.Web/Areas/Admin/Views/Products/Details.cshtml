@@ -1,0 +1,74 @@
+﻿@model AutoPartsStore.Infrastructure.Admin.Products.ProductDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-header border-0">
+                <h3 class="mb-0">جزئیات محصول</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="row col-lg-8">
+
+                        <div class="col-md-6 mt-4 mt-md-0">
+                            نام محصول : <b>@Model.Title</b>
+                        </div>
+
+                        <div class="col-md-6 mt-4 mt-md-0">
+                            دسته بندی : <b>@Model.CategoryTitle</b>
+                        </div>
+                        <div class="col-md-12  mt-4 mt-md-0">
+                            توضیحات : <b>
+                                @Model.Description
+                            </b>
+                        </div>
+
+                        <div class="col-md-6 mt-4 mt-md-0">
+                            تعداد موجود : <b>@Model.Stock</b>
+                        </div>
+                        <div class="col-md-6 mt-4 mt-md-0">
+                            قیمت : <b>@Model.Price (ریال)</b>
+                        </div>
+                        <div class="col-md-12 mt-4 mt-md-0">
+                            تعداد فروش : <b>@Model.BuyCount</b>
+                        </div>
+                        <div class="col-md-6 mt-4 mt-md-0">
+                            انتشار یافته ؟ :
+                            @if (Model.IsPublish)
+                            {
+                                <span class="badge badge-success">منتشر شده</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-warning">منتشر نشده</span>
+                            }
+                        </div>
+                        <div class="col-md-6 mt-4 mt-md-0">
+                            زمان انتشار :
+                            @if (Model.PublishDate.HasValue)
+                            {
+                                <span class="badge badge-light">@Model.PublishDate.Value.ToShortDateString()</span>
+                            } 
+                            else
+                            {
+                                <span>---</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row col-lg-4 mt-4 mt-lg-0">
+                        <img class=" img-fluid" 
+                             src="@(Model.ImageName==null?"/img/theme/team-1-800x800.jpg":"/img/"+Model.ImageName)" 
+                             alt="">
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <a class="btn btn-light ml-4" href="/admin/products">بازگشت به لیست محصولات</a>
+                    <a class="btn btn-info" href="/admin/products/edit/@Model.Id">ویرایش</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
