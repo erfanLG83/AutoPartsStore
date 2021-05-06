@@ -1,0 +1,116 @@
+﻿@model AutoPartsStore.Infrastructure.Admin.UsersManager.UserCreateDTO
+@{
+    ViewData["Title"] = "Create";
+}
+@section Header{
+    <link href="https://tom-select.js.org/css/tom-select.bootstrap4.css?%20" rel="stylesheet" />
+}
+<div class="col">
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">افزودن کاربر</h3>
+        </div>
+        <div class="card-body">
+            <form enctype="multipart/form-data" action="/admin/usersmanager/create" method="post">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="Username">نام کاربری</label>
+                        <input asp-for="Username" type="text" class="form-control" placeholder="نام کاربری را وارد کنید" />
+                        <span class="text-danger" asp-validation-for="Username"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="Email">ایمیل</label>
+                        <input asp-for="Email" class="form-control" />
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class=" form-group col-md-6">
+                        <label asp-for="FirstName">نام </label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span class="text-danger" asp-validation-for="FirstName"></span>
+                    </div>
+                    <div class=" form-group col-md-6">
+                        <label asp-for="LastName">نام خانوادگی</label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span class="text-danger" asp-validation-for="LastName"></span>
+                    </div>
+                    <div class=" form-group col-md-6">
+                        <label asp-for="Password">کلمه عبور </label>
+                        <input asp-for="Password" class="form-control" />
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="ConfirmPassword">تکرار کلمه عبور</label>
+                        <input asp-for="ConfirmPassword" class="form-control" />
+                        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                    </div>
+                    <div class="col-12 form-group">
+                        <label asp-for="UserRoles">نقش ها</label>
+                        <div id="disable-wrapper" style="position:relative">
+                            <input type="text" asp-for="UserRoles" id="disable-backspace" autocomplete="off">
+                            <input type="text" id="input-disable-control" class="form-control mt-2" autocomplete="off" placeholder="تقش ها را انتخاب کنید">
+                        </div>
+                    </div>
+                    <h4 class="mt-3 mb-3 alert alert-success col-12">اطلاعات اختیاری</h4>
+                    <div class=" form-group col-md-6">
+                        <label asp-for="PhoneNumber">شماره تلفن</label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="PostalCode">کد پستی</label>
+                        <input asp-for="PostalCode" class="form-control" />
+                        <span class="text-danger" asp-validation-for="PostalCode"></span>
+                    </div>
+                    <div class="form-group col-12">
+                        <label asp-for="Address">آدرس</label>
+                        <textarea asp-for="Address" class="form-control" rows="5"></textarea>
+                        <span class="text-danger" asp-validation-for="Address"></span>
+                    </div>
+
+                    <div class="col-12 form-group">
+                        <label asp-for="ImageFile">تصویر</label>
+                        <input asp-for="ImageFile" class=" form-control" type="file">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class=" col-md-6">
+                        <button type="submit" class="btn btn-success float-left">
+                            افزودن
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/tomselect/tom-select.base.min.js"></script>
+    <script src="~/js/tomselect/remove_button.js"></script>
+    <script src="~/js/tomselect/no_backspace_delete.js"></script>
+    <script>
+        new TomSelect('#disable-backspace', {
+            plugins: ['no_backspace_delete', 'remove_button',],
+            persist: false,
+            create: false,
+            controlInput: '#input-disable-control',
+            dropdownParent: '#disable-wrapper',
+            valueField: 'title',
+            labelField: 'title',
+            searchField: 'title',
+            options: [
+                @{
+                    string roles = "";
+                    foreach (var item in ViewBag.Roles)
+                    {
+                        roles += "{ title:'" +
+                            item+
+                    "'},";
+                    }
+                }
+                @Html.Raw(roles)
+            ],
+        });
+    </script>
+}

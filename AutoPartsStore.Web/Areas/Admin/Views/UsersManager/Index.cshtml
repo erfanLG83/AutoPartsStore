@@ -1,0 +1,130 @@
+﻿@model IEnumerable<AutoPartsStore.Infrastructure.Admin.UsersManager.UserViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" onclick="deleteUser()" class="btn btn-danger">حذف</button>
+                <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">لفو</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">کاربران</h3>
+            <a href="/admin/usersmanager/create" class="btn btn-outline-primary mt-3 mr-2">افزودن کاربر</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">نام کاربری</th>
+                        <th scope="col">نام و نام خانوادگی</th>
+                        <th scope="col">ایمیل</th>
+                        <th scope="col">نقش ها</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr data-row-id="@item.Id">
+                            <td>@item.Row</td>
+                            <td scope="row">
+                                <div class="media align-items-center">
+                                    <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder" src="@(String.IsNullOrEmpty(item.Image) ? "/img/theme/team-1-800x800.jpg" : item.Image)">
+                                    </a>
+                                    <div class="media-body">
+                                        <span class="mb-0 text-sm">@item.UserName</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@(item.FirstName + " " + item.LastName)</td>
+                            <td>@item.Email</td>
+                            <td class="text-center text-danger">
+                                @if (String.IsNullOrEmpty(item.Roles))
+                                {
+                                    <span class="badge badge-warning">
+                                        بدون نقش
+                                    </span>
+                                }
+                                else
+                                {
+                                    foreach (var role in item.Roles.Split(','))
+                                    {
+                                        <span class="badge badge-primary">
+                                            @role
+                                        </span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <a class="mr-0 btn-sm btn btn-info" href="/admin/usersmanager/details/@item.Id">جزئیات</a>
+                                <a class="mr-0 btn-sm btn btn-primary" href="/admin/usersmanager/edit/@item.Id">ویرایش</a>
+                                <a class="mr-0 btn-sm btn btn-danger" href="#" onclick="showModal(@item.Id ,'@item.UserName')">حذف</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer py-4">
+            <nav aria-label="...">
+                <partial name="_PaginationPartial" model="ViewBag.Pagination" />
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        let confirmId = null;
+        const showModal = (id, name) => {
+            $('#modal-default .modal-body p').html(`
+                    از حذف کاربر '${name}' مطمئن هستید ؟
+                    <br/>
+                    این عمل غیر قابل بازگشت است.
+                `);
+            confirmId = id;
+            $('#modal-default').modal();
+        }
+        const deleteUser = () => {
+            const id = confirmId;
+            fetch('/admin/usersmanager/delete/' + id, {method:"DELETE"})
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success)
+                        $(`tr[data-row-id='${id}']`).remove();
+                    else
+                        alert('مشکلی هنگام درخواست به سرور پیش امد !');
+                })
+                .catch(err => console.log(err))
+                .finally(() => {
+                    $('#modal-default').modal('hide');
+                });
+        }
+    </script>
+}
+
