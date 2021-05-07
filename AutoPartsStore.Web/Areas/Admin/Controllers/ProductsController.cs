@@ -112,7 +112,7 @@ namespace AutoPartsStore.Web.Areas.Admin.Controllers
                     Price=createDTO.Price,
                     Title=createDTO.Title
                 };
-                product.ImageName = await _fileWorker.AddFileToPath(createDTO.Image, "img");
+                product.ImageName = await _fileWorker.AddFileToPathAsync(createDTO.Image, "img");
                 if (product.IsPublish)
                     product.PublishDate = DateTime.Now;
                 await _repository.CreateAsync(product);
@@ -151,7 +151,7 @@ namespace AutoPartsStore.Web.Areas.Admin.Controllers
                 {
                     if (product.ImageName != null)
                         _fileWorker.RemoveFileInPath("/img/" + product.ImageName);
-                    product.ImageName = await _fileWorker.AddFileToPath(editDTO.EditImage, "img");
+                    product.ImageName = await _fileWorker.AddFileToPathAsync(editDTO.EditImage, "img");
                 }
                 if (!editDTO.IsPublish)
                     product.PublishDate = null;

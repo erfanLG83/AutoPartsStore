@@ -13,6 +13,7 @@ namespace AutoPartsStore.Domain.Auth
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string ImageName { get; set; }
+        public bool IsDeleted { get; set; }
         #region Navigation Properties
         public List<ProductCard> ProductCards { get; set; }
         public List<Order> Orders { get; set; }

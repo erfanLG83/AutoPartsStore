@@ -22,6 +22,10 @@ namespace AutoPartsStore.Infrastructure.Admin.UsersManager
             PhoneNumber = user.PhoneNumber;
             IsLockout = user.LockoutEnabled;
             EmailConfirmed = user.EmailConfirmed;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            Address = user.Address;
+            PostalCode = user.PostalCode;
             UserRoles = "";
             foreach (var item in roles)
             {
@@ -48,5 +52,18 @@ namespace AutoPartsStore.Infrastructure.Admin.UsersManager
         public bool IsLockout { get; set; }
         public bool EmailConfirmed { get; set; }
         public bool TwoFactorEnabled { get; set; }
+
+        [Display(Name = "آدرس")]
+        public string Address { get; set; }
+        [Display(Name = "کد پستی")]
+        public string PostalCode { get; set; }
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [Display(Name = "نام خانوادگی")]
+        [StringLength(50, ErrorMessage = "{0} باید کمتر از {2} کارکتر باشد و حداکثر دارای {1} کارکتر باشد", MinimumLength = 2)]
+        public string LastName { get; set; }
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [Display(Name = "نام")]
+        [StringLength(50, ErrorMessage = "{0} باید کمتر از {2} کارکتر باشد و حداکثر دارای {1} کارکتر باشد", MinimumLength = 2)]
+        public string FirstName { get; set; }
     }
 }

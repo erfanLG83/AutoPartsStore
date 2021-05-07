@@ -13,18 +13,16 @@ namespace AutoPartsStore.Services.Implementation
         {
             _rootPath = rootPath;
         }
-        public async Task<string> AddFileToPath(IFormFile file, string path)
+        public async Task<string> AddFileToPathAsync(IFormFile file, string path)
         {
             string name = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             path = Path.Combine(_rootPath, path, name);
-            using (Stream stream = new FileStream(path, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
-                return name;
-            }
+            using Stream stream = new FileStream(path, FileMode.Create);
+            await file.CopyToAsync(stream);
+            return name;
         }
 
-        public async Task AddFileToPath(IFormFile file, string path, string fileName)
+        public async Task AddFileToPathAsync(IFormFile file, string path, string fileName)
         {
             path = Path.Combine(_rootPath, path, fileName);
             using (Stream stream = new FileStream(path, FileMode.Create))

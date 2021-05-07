@@ -1,0 +1,68 @@
+﻿@model AutoPartsStore.Infrastructure.Admin.UsersManager.UserDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">جزئیات کاربر</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="row col-lg-8">
+
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        نام کاربری : <b>@Model.UserName</b>
+                    </div>
+
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        نام و نام خانوادگی : <b>@Model.FullName</b>
+                    </div>
+
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        ایمیل : <b>@Model.Email</b>
+                    </div>
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        ایمیل تایید شده؟ : <b>@(Model.EmailConfirmed ? "بله" : "خیر")</b>
+                    </div>
+                    <div class="col-md-12  mt-4 mt-md-0">
+                        آدرس : <b>
+                            @Model.Address
+                        </b>
+                    </div>
+
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        شماره تلفن : <b>@Model.PhoneNumber</b>
+                    </div>
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        کدپستی : <b>@Model.PostalCode</b>
+                    </div>
+
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        هزینه خرید ها تا کنون : <b>@Model.TotalBuys (ریال)</b>
+                    </div>
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        نقش ها :
+                        @foreach (var item in Model.Roles)
+                        {
+                            <span class="badge badge-primary">@item</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="row col-lg-4 mt-4 mt-lg-0">
+                    <img class=" img-fluid"
+                         src="@(Model.Image==null?"/img/theme/team-1-800x800.jpg":"/img/"+Model.Image)"
+                         alt="">
+                </div>
+            </div>
+            <div class="row mt-4" mt-5">
+                <a class="btn col-md-12 col-lg-6 btn-secondary" href="/admin/usersmanager">بازگشت به لیست کاربران</a>
+                <a class="btn col-md-12 col-lg-6 btn-secondary" href="/admin/ordersmanager/userorder/@Model.Id">مدیریت حسابهای کاربر</a>
+                <a class="btn col-md-12 col-lg-6 btn-secondary" href="/admin/usersmanager/edit/@Model.Id">ویرایش</a>
+            </div>
+        </div>
+    </div>
+</div>
+

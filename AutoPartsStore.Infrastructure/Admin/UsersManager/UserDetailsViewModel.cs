@@ -16,20 +16,24 @@ namespace AutoPartsStore.Infrastructure.Admin.UsersManager
             PhoneNumber = user.PhoneNumber;
             Image = user.ImageName;
             Roles = roles;
-            TwoFactorEnabled = user.TwoFactorEnabled;
             LockoutEnabled = user.LockoutEnabled;
             EmailConfirmed = user.EmailConfirmed;
             AccessFailedCount = user.AccessFailedCount;
             LockoutEnd = user.LockoutEnd;
+            Address = user.Address;
+            FullName = user.FirstName + " " + user.LastName;
+            PostalCode = user.PostalCode;
         }
-
+        public string TotalBuys { get; set; }
+        public string Address { get; set; }
+        public string FullName { get; set; }
+        public string PostalCode { get; set; }
         public string Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string Image { get; set; }
         public IEnumerable<string> Roles { get; set; }
-        public bool TwoFactorEnabled { get; set; }
 
         public bool LockoutEnabled { get; set; }
 

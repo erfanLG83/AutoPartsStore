@@ -1,6 +1,6 @@
-﻿@model AutoPartsStore.Infrastructure.Admin.UsersManager.UserCreateDTO
+﻿@model AutoPartsStore.Infrastructure.Admin.UsersManager.UserEditDto
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
 }
 @section Header{
     <link href="https://tom-select.js.org/css/tom-select.bootstrap4.css?%20" rel="stylesheet" />
@@ -8,14 +8,13 @@
 <div class="col">
     <div class="card shadow">
         <div class="card-header border-0">
-            <h3 class="mb-0">افزودن کاربر</h3>
+            <h3 class="mb-0">ویرایش کاربر</h3>
         </div>
         <div class="card-body">
-            <form enctype="multipart/form-data" action="/admin/usersmanager/create" method="post">
+            <form enctype="multipart/form-data" action="/admin/usersmanager/edit" method="post">
+                <input type="hidden" asp-for="Id"/>
                 <div class="row">
-                    <div asp-validation-summary="All" class="col-12 text-danger text-sm">
-
-                    </div>
+                    <div asp-validation-summary="All" class="col-12 text-danger text-sm"></div>
                     <div class="form-group col-md-6">
                         <label asp-for="Username">نام کاربری</label>
                         <input asp-for="Username" type="text" class="form-control" placeholder="نام کاربری را وارد کنید" />
@@ -36,16 +35,6 @@
                         <input asp-for="LastName" class="form-control" />
                         <span class="text-danger" asp-validation-for="LastName"></span>
                     </div>
-                    <div class=" form-group col-md-6">
-                        <label asp-for="Password">کلمه عبور </label>
-                        <input asp-for="Password" class="form-control" />
-                        <span class="text-danger" asp-validation-for="Password"></span>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label asp-for="ConfirmPassword">تکرار کلمه عبور</label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
-                    </div>
                     <div class="col-12 form-group">
                         <label asp-for="UserRoles">نقش ها</label>
                         <div id="disable-wrapper" style="position:relative">
@@ -57,7 +46,7 @@
                     <div class=" form-group col-md-6">
                         <label asp-for="PhoneNumber">شماره تلفن</label>
                         <input asp-for="PhoneNumber" class="form-control" />
-                        <span class="text-danger" asp-validation-for="Password"></span>
+                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
                     </div>
                     <div class="form-group col-md-6">
                         <label asp-for="PostalCode">کد پستی</label>
@@ -69,8 +58,16 @@
                         <textarea asp-for="Address" class="form-control" rows="5"></textarea>
                         <span class="text-danger" asp-validation-for="Address"></span>
                     </div>
+                    <div class="custom-control mr-2 col-md-6 custom-checkbox">
+                        <input asp-for="IsLockout" type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label mr--1" asp-for="IsLockout">امکان قفل شدن اکانت ؟</label>
+                    </div>
 
-                    <div class="col-12 form-group">
+                    <div class="custom-control mr-2 col-md-6 custom-checkbox">
+                        <input asp-for="EmailConfirmed" type="checkbox" class="custom-control-input">
+                        <label class="custom-control-label mr--1" asp-for="EmailConfirmed">ایمیل تایید شده؟</label>
+                    </div>
+                    <div class="col-12 mt-2 form-group">
                         <label asp-for="ImageFile">تصویر</label>
                         <input asp-for="ImageFile" class=" form-control" type="file">
                     </div>
@@ -78,7 +75,7 @@
                 <div class="row">
                     <div class=" col-md-6">
                         <button type="submit" class="btn btn-success float-left">
-                            افزودن
+                            ثبت
                         </button>
                     </div>
                 </div>
