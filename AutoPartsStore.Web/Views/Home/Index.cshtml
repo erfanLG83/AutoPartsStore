@@ -1,8 +1,159 @@
-﻿@{
+﻿@model IEnumerable<AutoPartsStore.Infrastructure.ViewModels.ProductHomePageModel>
+@{
     ViewData["Title"] = "Home Page";
 }
+<div class="banner">
+    <div class="container">
+        <div class="banner-bottom">
+            <div class="banner-bottom-left">
+                <h2>خرید از<br> Auto <br> Iran</h2>
+            </div>
+            <div class="banner-bottom-right">
+                <div class="callbacks_container">
+                    <ul class="rslides" id="slider4">
+                        <li>
+                            <div class="banner-info">
+                                <h3>قیمت های بصرفه و مناسب</h3>
+                                <p>خرید خود را همین الان اغاز کنید</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="banner-info">
+                                <h3>خرید تمام آنلاین</h3>
+                                <p>خرید خود را همین الان اغاز کنید</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="banner-info">
+                                <h3>بهترین جنس ها به همراه تضمین</h3>
+                                <p>خرید خود را همین الان اغاز کنید</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <script src="js/responsiveslides.min.js"></script>
+                    <script>
+                            // You can also use "$(window).load(function() {"
+                            $(function() {
+                                // Slideshow 4
+                                $("#slider4").responsiveSlides({
+                                    auto: true,
+                                    pager: true,
+                                    nav: false,
+                                    speed: 500,
+                                    namespace: "callbacks",
+                                    before: function() {
+                                        $('.events').append("<li>before event fired.</li>");
+                                    },
+                                    after: function() {
+                                        $('.events').append("<li>after event fired.</li>");
+                                    }
+                                });
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+                            });
+                    </script>
+                </div>
+                <!--banner-->
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        <div class="shop">
+            <a href="single.html">اخرین محصولات ما را ببنید</a>
+        </div>
+    </div>
+</div>
+<!-- content-section-starts-here -->
+<div class="container">
+    <div class="main-content">
+        <div class="online-strip row">
+            <div class="col-md-4 follow-us">
+                <h3>
+                    ما را دنبال کنید :
+                    <a class="twitter" href="#"></a>
+                    <a class="facebook" href="#"></a>
+                </h3>
+            </div>
+            <div class="col-md-4 shipping-grid">
+                <div class="shipping">
+                    <img src="images/shipping.png" alt="" />
+                </div>
+                <div class="shipping-text">
+                    <h3>ارسال رایگان</h3>
+                    <p>برای خرید های بالاتراز 2,000,000</p>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-md-4 online-order">
+                <p>تلفن پشتیبانی</p>
+                <h3>999 4567 8902</h3>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="products-grid row justify-content-between">
+            <header class="col-12">
+                <h3 class="head text-center">آخرین محصولات</h3>
+            </header>
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 product simpleCart_shelfItem text-center">
+                    <a href="single.html"><img src="/img/@item.Image" alt="" /></a>
+                    <div class="mask">
+                        <a class="btn" href="single.html">جزئیات</a>
+                    </div>
+                    <a class="product_name" href="single.html">@item.Title</a>
+                    <p><a class="item_add" href="#"><i></i> <span class="item_price">@item.Price.ToString("n0") ریال</span></a></p>
+                </div>
+            }
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+</div>
+<div class="other-products">
+    <div class="container">
+        <h3 class="like text-center">محصولات ویژه</h3>
+        <ul style="display: none;" id="flexiselDemo3">
+            <li>
+                <a href="single.html"><img src="images/l1.jpg" class="img-responsive" alt="" /></a>
+                <div class="product liked-product simpleCart_shelfItem">
+                    <a class="like_name" href="single.html">perfectly simple</a>
+                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$759</span></a></p>
+                </div>
+            </li>
+            <li>
+                <a href="single.html"><img src="images/l2.jpg" class="img-responsive" alt="" /></a>
+                <div class="product liked-product simpleCart_shelfItem">
+                    <a class="like_name" href="single.html">praising pain</a>
+                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$699</span></a></p>
+                </div>
+            </li>
+            <li>
+                <a href="single.html"><img src="images/l3.jpg" class="img-responsive" alt="" /></a>
+                <div class="product liked-product simpleCart_shelfItem">
+                    <a class="like_name" href="single.html">Neque porro</a>
+                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
+                </div>
+            </li>
+            <li>
+                <a href="single.html"><img src="images/l4.jpg" class="img-responsive" alt="" /></a>
+                <div class="product liked-product simpleCart_shelfItem">
+                    <a class="like_name" href="single.html">equal blame</a>
+                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$499</span></a></p>
+                </div>
+            </li>
+            <li>
+                <a href="single.html"><img src="images/l5.jpg" class="img-responsive" alt="" /></a>
+                <div class="product liked-product simpleCart_shelfItem">
+                    <a class="like_name" href="single.html">perfectly simple</a>
+                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$649</span></a></p>
+                </div>
+            </li>
+        </ul>
+        <script type="text/javascript" src="js/jquery.flexisel.js"></script>
+        <script type="text/javascript">
+                $(window).load(function() {
+                    $("#fixiselDemo3").flexisel();
+
+                });
+        </script>
+    </div>
 </div>

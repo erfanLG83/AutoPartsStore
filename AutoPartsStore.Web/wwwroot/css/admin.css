@@ -1,0 +1,40 @@
+﻿.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-info {
+    color: #fff;
+    background-color: #17a2b8;
+}
+
+a.notfication-link:hover {
+    color: #9c117e;
+}
+
+a.notfication-link {
+    color: #000;
+}
+
+td .avatar {
+    margin-left: 10px;
+}
+
+.dropdown-menu .btn {
+    margin-right: 0;
+}
+
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.chart {
+    overflow: auto;
+}
+
+@media only screen and (max-width:767px) {
+    .main-content .nav {
+        display: none;
+    }
+}

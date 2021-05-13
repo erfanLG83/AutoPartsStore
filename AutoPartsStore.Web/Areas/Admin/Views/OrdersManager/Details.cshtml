@@ -1,0 +1,75 @@
+﻿@model AutoPartsStore.Infrastructure.Admin.OrdersManager.OrderDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">جزئیات سفارش</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="row h-100 col-lg-8">
+
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        تاریخ ثبت سفارش : <b>@Model.Date</b>
+                    </div>
+
+                    <div class="col-md-6 mt-4 mt-md-0">
+                        مبلغ کله سفارش : <b>@Model.TotalPrice</b>
+                    </div>
+                    <div class="col-md-6  mt-4 mt-md-0">
+                        وضعیت : <b>
+                            @Model.Status
+                        </b>
+                    </div>
+                </div>
+
+                <div class="row col-lg-4 mt-4 mt-lg-0">
+                    <h3 class="text-center col-12">کاربر @Model.UserName</h3>
+                    <img class=" img-fluid"
+                         src="@(Model.ImageName==null?"/img/theme/team-1-800x800.jpg":"/img/"+Model.ImageName)"
+                         alt="">
+                </div>
+            </div>
+            <div class="row mt-5">
+                <h4 class="col-12">محصولات سفارش</h4>
+                <div class="table-responsive">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>نام محصول</th>
+                                <th>تعداد</th>
+                                <th>قیمت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Products)
+                            {
+                                <tr>
+                                    <td scope="row">@item.Row</td>
+                                    <td scope="row" class="p-0">
+                                        <div class="media align-items-center">
+                                            <a href="#" class="avatar rounded-circle mr-3">
+                                                <img alt="Image placeholder" src="@(item.ImageName == null ? "/img/theme/angular.jpg" : "/img/"+item.ImageName)">
+                                            </a>
+                                            <div class="media-body">
+                                                <span class="mb-0 text-sm">@item.Title</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td scope="row">@item.Count</td>
+                                    <td scope="row">@item.Price</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -162,9 +162,14 @@ namespace AutoPartsStore.Infrastructure.Repositories
             return _context.Entry(entity).Entity;
         }
 
-        public Task<TEntity> GetReferencePropertyAsync(TEntity entity, Expression<Func<TEntity, object>>[] references)
+        public async Task<TEntity> GetReferencePropertyAsync(TEntity entity, Expression<Func<TEntity, object>>[] references)
         {
-            throw new NotImplementedException();
+            var ent = _context.Entry(entity);
+            foreach (var refrence in references)
+            {
+                await ent.Reference(refrence).LoadAsync();
+            }
+            return ent.Entity;
         }
 
         public void Update(TEntity entity)

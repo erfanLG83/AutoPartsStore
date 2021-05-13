@@ -1,0 +1,8 @@
+﻿@inject AutoPartsStore.Persistence.ApplicationDbContext context
+
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        @foreach (var item in context.Categories)
+        {
+            <a class="dropdown-item" href="/products/filter?categories=@item.Id">@item.Title</a>
+        }
+    </div>

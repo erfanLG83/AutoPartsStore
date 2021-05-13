@@ -22,6 +22,7 @@ namespace AutoPartsStore.Persistence
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCard> ProductCards { get; set; }
+        public DbSet<OrderStatus> Statuses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,6 +35,18 @@ namespace AutoPartsStore.Persistence
             builder.ApplyConfiguration<Product>(new ProductMapping());
             builder.ApplyConfiguration<Order>(new OrderMapping());
             builder.ApplyConfiguration<AppUser>(new UserMapping());
+            builder.Entity<OrderStatus>()
+                .ToTable("OrderStatuses")
+                .HasKey(m => m.Id);
+            builder.Entity<OrderStatus>()
+                .Property(n => n.Text)
+                .IsRequired()
+                .HasMaxLength(250);
+            builder.Entity<OrderStatus>()
+                .HasMany(o => o.Orders)
+                .WithOne(n => n.OrderStatus)
+                .HasForeignKey(n=>n.StatusId)
+                .OnDelete(DeleteBehavior.SetNull);
             builder.Entity<AppUser>()
                 .ToTable("AppUsers");
             builder.Entity<AppRole>()

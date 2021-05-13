@@ -1,0 +1,133 @@
+﻿@model IEnumerable<AutoPartsStore.Infrastructure.Admin.OrdersManager.OrdersManagerIndexViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modal-default" aria-hidden="true">
+    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p></p>
+                <div class="form-group col-12">
+                    <label for="statuses">وضعیت</label>
+                    <select id="statuses" class="form-control">
+                        @foreach (var item in ViewBag.Statuses as List<AutoPartsStore.Domain.Entities.OrderStatus>)
+                        {
+                            <option value="@item.Id">@item.Text</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="changeStatus()" class="btn btn-danger">ثبت</button>
+                <button type="button" class="btn btn-link  ml-auto" data-dismiss="modal">لغو</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="col">
+    <div class="card shadow">
+        <div class="card-header border-0">
+            <h3 class="mb-0">سفارشات</h3>
+            <button class="btn btn-success float-left">فیلتر سازی</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">کاربر</th>
+                        <th scope="col">وضعیت</th>
+                        <th scope="col">مبلغ کل</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr data-row-id="@item.Id">
+                            <td>@item.Row</td>
+                            <td scope="row">
+                                <div class="media align-items-center">
+                                    <a href="#" class="avatar rounded-circle mr-3">
+                                        <img alt="Image placeholder" src="@(item.ImageName == null ? "/img/theme/angular.jpg" : "/img/"+item.ImageName)">
+                                    </a>
+                                    <div class="media-body">
+                                        <span class="mb-0 text-sm">@item.UserName</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                @if (item.Status == null)
+                                {
+                                    <span class="badge badge-warning">نا معلوم</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-primary">@item.Status</span>
+                                }
+                            </td>
+                            <td>@item.TotalPrice (ریال)</td>
+                            <td>
+                                <a class="mr-0 btn-sm btn btn-info" href="/admin/ordersmanager/details/@item.Id">جزئیات</a>
+                                <button class="mr-0 btn-sm btn btn-info" onclick="showModal(@item.Id)">تغییر وضعیت</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer py-4">
+            <nav aria-label="...">
+                <partial name="_PaginationPartial" model="ViewBag.Pagination" />
+            </nav>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        let confirmId = null;
+        const showModal = (id) => {
+            $('#modal-default .modal-body p').html(`
+                        تغییر وضعیت سفارش #${id}
+                    `);
+            confirmId = id;
+            $('#modal-default').modal();
+            const statusText = $(`tr[data-row-id='${id}'] td:nth-child(3) span`).html();
+            const options = document.querySelectorAll('#statuses option');
+            for (op in options) {
+                if (options[op].innerHTML === statusText)
+                    options[op].selected = true;
+            }
+        }
+        const changeStatus = () => {
+            const id = confirmId;
+            const statusId = $('#statuses').val();
+            fetch('/admin/ordersmanager/changestatus/' + id + '?statusId=' + statusId)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const elem = $(`tr[data-row-id='${id}'] td:nth-child(3) span`);
+                        elem.html(data.statusText);
+                        elem.removeClass('badge-warning');
+                        elem.addClass('badge-primary');
+                    }
+                    else
+                        alert('مشکلی هنگام درخواست به سرور پیش امد !');
+                })
+                .catch(err => console.log(err))
+                .finally(() => {
+                    $('#modal-default').modal('hide');
+                });
+        }
+    </script>
+}

@@ -1,48 +1,197 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html dir="rtl">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AutoPartsStore.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <title>@ViewData["title"]</title>
+    <!-- <link href="css/bootstrap.css" rel='stylesheet' type='text/css' /> -->
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.5.3/css/bootstrap.min.css" integrity="sha384-JvExCACAZcHNJEc7156QaHXTnQL3hQBixvj5RV5buE7vgnNEzzskDtx9NQ4p6BJe" crossorigin="anonymous">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/js/jquery.min.js"></script>
+    <!-- Custom Theme files -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- Icons -->
+    <link href="/vendor/@("@")fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <!-- Custom Theme files -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Eshop Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript">
+        addEventListener("load", function() {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!--webfont-->
+    <!-- for bootstrap working -->
+    <!-- <script type="text/javascript" src="js/bootstrap-3.1.1.min.js"></script> -->
+    <!-- //for bootstrap working -->
+    <!-- cart -->
+    <script src="/js/simpleCart.min.js">
+    </script>
+    <!-- cart -->
+    <link rel="stylesheet" href="/css/flexslider.css" type="text/css" media="screen" />
+    @await RenderSectionAsync("Head", false)
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <!-- header-section-starts -->
+    <div class="header">
+        <div class="header-top-strip">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AutoPartsStore.Web</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                <div class="header-top-left">
+                    <ul>
+                        <li><a href="account.html">ورود<span class="fas fa-sign-in"> </span></a></li>
+                        <li><a href="register.html">ساخت اکانت<span class="fas fa-user-plus"> </span></a></li>
+                        <li><a href="register.html">سلام عرفان خوش اومدی</a></li>
+                        <li><a href="register.html">خروج <i class="fas fa-sign-out-alt"></i></a></li>
                     </ul>
                 </div>
+                <div class="header-right">
+                    <div class="cart box_1">
+                        <a href="checkout.html">
+                            <h3> <span> 125,000,000 ریال </span> (<span > 5 </span>)<img src="images/bag.png" alt=""></h3>
+                        </a>
+                        <p><a href="javascript:;" class="simpleCart_empty">سبد خرید</a></p>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+                <div class="clearfix"> </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - AutoPartsStore.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
+    </div>
+    <!-- header-section-ends -->
+    <div class="banner-top">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+                <div class="logo navbar-brand">
+                    <h1><a href="index.html"><span>A</span> utoIran</a></h1>
+                </div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">خانه <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">حساب کاربری</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                دسته بندی ها
+                            </a>
+                            <partial name="_CategoriesInNavbar"/>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0 col-12 col-md-auto">
+                        <input class="form-control mr-sm-2" type="search" placeholder="جستجو کنید..." aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">جستجو</button>
+                    </form>
+                </div>
+            </nav>
+            <!--/.navbar-->
+        </div>
+    </div>
+    @RenderBody()
+    <div class="news-letter">
+        <div class="container">
+            <div class="join">
+                <h6>عضو خبرنامه ما شوید</h6>
+                <div class="sub-left-right">
+                    <form>
+                        <input type="text" value="ایمیل خود را وارد کنید" onfocus="this.value = '';"/>
+                        <input type="submit" value="عضویت" />
+                    </form>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <div class="footer_top">
+                <div class="span_of_4 row">
+                    <div class="col-md-3 span1_of_4">
+                        <h4>Shop</h4>
+                        <ul class="f_nav">
+                            <li><a href="#">new arrivals</a></li>
+                            <li><a href="#">men</a></li>
+                            <li><a href="#">women</a></li>
+                            <li><a href="#">accessories</a></li>
+                            <li><a href="#">kids</a></li>
+                            <li><a href="#">brands</a></li>
+                            <li><a href="#">trends</a></li>
+                            <li><a href="#">sale</a></li>
+                            <li><a href="#">style videos</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 span1_of_4">
+                        <h4>help</h4>
+                        <ul class="f_nav">
+                            <li><a href="#">frequently asked  questions</a></li>
+                            <li><a href="#">men</a></li>
+                            <li><a href="#">women</a></li>
+                            <li><a href="#">accessories</a></li>
+                            <li><a href="#">kids</a></li>
+                            <li><a href="#">brands</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 span1_of_4">
+                        <h4>account</h4>
+                        <ul class="f_nav">
+                            <li><a href="account.html">login</a></li>
+                            <li><a href="register.html">create an account</a></li>
+                            <li><a href="#">create wishlist</a></li>
+                            <li><a href="checkout.html">my shopping bag</a></li>
+                            <li><a href="#">brands</a></li>
+                            <li><a href="#">create wishlist</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 span1_of_4">
+                        <h4>popular</h4>
+                        <ul class="f_nav">
+                            <li><a href="#">new arrivals</a></li>
+                            <li><a href="#">men</a></li>
+                            <li><a href="#">women</a></li>
+                            <li><a href="#">accessories</a></li>
+                            <li><a href="#">kids</a></li>
+                            <li><a href="#">brands</a></li>
+                            <li><a href="#">trends</a></li>
+                            <li><a href="#">sale</a></li>
+                            <li><a href="#">style videos</a></li>
+                            <li><a href="#">login</a></li>
+                            <li><a href="#">brands</a></li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="cards text-center">
+                <img src="images/cards.jpg" alt="" />
+            </div>
+            <div class="copyright text-center">
+                <p>© 2015 Eshop. All Rights Reserved | Design by <a href="http://w3layouts.com">  W3layouts</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    @await RenderSectionAsync("Scripts", false)
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
+
 </html>

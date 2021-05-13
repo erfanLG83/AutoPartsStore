@@ -12,8 +12,11 @@ namespace AutoPartsStore.Domain.Entities
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public long TotalPrice { get; set; }
+        public DateTime Date { get; set; }
+        public int? StatusId { get; set; }
         #region Navigation Properties
         public AppUser User { get; set; }
+        public OrderStatus OrderStatus { get; set; }
         public List<ProductCard> ProductCards { get; set; }
         #endregion
     }

@@ -21,7 +21,7 @@
     <!--Dropzone CSS-->
     <link type="text/css" href="/vendor/dropzone/dist/min/dropzone.min.css" />
     <!--Custome Styles-->
-    <link rel="stylesheet" href="/css//style.css">
+    <link rel="stylesheet" href="/css/admin.css">
     @await RenderSectionAsync("Head", false)
 </head>
 
@@ -34,8 +34,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <!-- Brand -->
-            <a class="navbar-brand pt-0" href="./index.html">
-                <img src="/img/brand/logo.svg" class="navbar-brand-img" alt="...">
+            <a class="navbar-brand pt-0" href="/">
+                <img src="/img/brand/logo.svg" class="navbar-brand-img" alt="auto iran">
             </a>
             <!-- User -->
             <ul class="nav align-items-center d-md-none">
@@ -90,7 +90,7 @@
                 <div class="navbar-collapse-header d-md-none">
                     <div class="row">
                         <div class="col-6 collapse-brand">
-                            <a href="/index.html">
+                            <a href="/">
                                 <img src="/img/brand/blue.png">
                             </a>
                         </div>
@@ -131,17 +131,22 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./examples/profile.html">
+                        <a class="nav-link" href="/admin/ordersmanager">
+                            <i class="ni ni-shop text-red"></i> سفارشات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/usersmanager">
                             <i class="ni ni-single-02 text-yellow"></i> کاربران
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./examples/tables.html">
+                        <a class="nav-link" href="/admin/rolesmanager">
                             <i class="ni ni-bullet-list-67 text-red"></i> نقش ها
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./examples/login.html">
+                        <a class="nav-link" href="/admin/setting">
                             <i class="ni ni-settings text-info"></i> تنظیمات
                         </a>
                     </li>

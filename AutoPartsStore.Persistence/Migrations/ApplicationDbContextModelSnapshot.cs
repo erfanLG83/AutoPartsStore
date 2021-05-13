@@ -166,10 +166,16 @@ namespace AutoPartsStore.Persistence.Migrations
                         .HasMaxLength(350)
                         .HasColumnType("nvarchar(350)");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PostalCode")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("int");
 
                     b.Property<long>("TotalPrice")
                         .HasColumnType("bigint");
@@ -179,9 +185,28 @@ namespace AutoPartsStore.Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StatusId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("AutoPartsStore.Domain.Entities.OrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("AutoPartsStore.Domain.Entities.Product", b =>
@@ -246,6 +271,9 @@ namespace AutoPartsStore.Persistence.Migrations
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
+
+                    b.Property<long?>("SoldPrice")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -367,10 +395,17 @@ namespace AutoPartsStore.Persistence.Migrations
 
             modelBuilder.Entity("AutoPartsStore.Domain.Entities.Order", b =>
                 {
+                    b.HasOne("AutoPartsStore.Domain.Entities.OrderStatus", "OrderStatus")
+                        .WithMany("Orders")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("AutoPartsStore.Domain.Auth.AppUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("OrderStatus");
 
                     b.Navigation("User");
                 });
@@ -476,6 +511,11 @@ namespace AutoPartsStore.Persistence.Migrations
             modelBuilder.Entity("AutoPartsStore.Domain.Entities.Order", b =>
                 {
                     b.Navigation("ProductCards");
+                });
+
+            modelBuilder.Entity("AutoPartsStore.Domain.Entities.OrderStatus", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("AutoPartsStore.Domain.Entities.Product", b =>
