@@ -30,12 +30,12 @@ namespace AutoPartsStore.Web.Controllers
                 return NotFound();
             product = await _repository.GetReferencePropertyAsync(product, n=>n.Category);
             var wordsInTitle = product.Title.Split(' ');
-            var products = await _repository.FindByConditionAsync(n=>!n.IsDelete&&n.IsPublish);
+            var products = await _repository.FindByConditionAsync(n=>!n.IsDelete&&n.IsPublish&&n.Id!=id);
             ViewBag.OtherProducts = products.Where(n =>
                 n.CategoryId==product.CategoryId||
                 AnyCommonWord(n.Title,wordsInTitle)||
                 AnyCommonWord(n.Description,wordsInTitle)
-            ).Select(p=>new ProductHomePageModel { 
+            ).Take(6).Select(p=>new ProductHomePageModel { 
                 Id=p.Id,
                 Image=p.ImageName,
                 Price=p.Price,

@@ -1,0 +1,44 @@
+﻿@model AutoPartsStore.Infrastructure.ViewModels.Account.LoginModel
+@{
+    ViewData["Title"] = "ورود به سایت";
+}
+@section Head{ 
+    <link href="/css/login.css" rel="stylesheet" />
+}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-12">
+                <div class="card">
+                    <form method="post" asp-action="login" asp-controller="Account" class="box">
+                        <input type="hidden" asp-for="ReturnUrl" />
+                        <h1>ورود به سایت</h1>
+                        <p class="text-muted">در صورت نداشتن حساب , <a href="#">ثبت نام</a> کنید</p>
+                        <div asp-validation-summary="All" class="text-danger mb-2 mt-2">
+
+                        </div>
+                        <input type="text" asp-for="UserName" placeholder="نام کاربری یا ایمیل خود را وارد کنید">
+                        <span class="text-danger" asp-validation-for="UserName"></span>
+                        <input asp-for="Password" placeholder="کلمه عبور خود را وارد کنید">
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                        <a class="forgot d-block text-muted" href="#">کلمه عبور  خود را فراموش کردم</a>
+                        <div class="mt-2">
+                            <label class="text-light" asp-for="RememberMe">مرا بخاطر بسپار</label>
+                            <input type="checkbox" asp-for="RememberMe" />
+                        </div>
+                        <input type="submit" name="" value="ورود" href="#">
+                        <div class="col-md-12">
+                            <ul class="social-network social-circle">
+                                <li><a href="#" class="icoFacebook" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="#" class="icoTwitter" title="Twitter"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="#" class="icoGoogle" title="Google +"><i class="fab fa-google-plus"></i></a></li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section Scripts{ 
+    <partial name="_ValidationScriptsPartial"/>
+}

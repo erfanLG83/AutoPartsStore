@@ -18,21 +18,9 @@
                     <div class="clearfix"></div>
                     <p>@Model.Descrioption</p>
                 </div>
-                <div class="purchase">
-                    <a class="btn float-left btn-outline-info" href="#">همین الان بخرید</a>
-                    <div class="social-icons">
-                        <ul>
-                            <li>
-                                <a class="facebook1" href="#"></a>
-                            </li>
-                            <li>
-                                <a class="twitter1" href="#"></a>
-                            </li>
-                            <li>
-                                <a class="googleplus1" href="#"></a>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="mt-3">
+                    <a class="btn mr-2 float-left btn-outline-secondary" href="#">افزودن به سبد خرید</a>
+                    <a class="btn mr-2 float-left btn-outline-info" href="#">همین الان بخرید</a>
                     <div class="clearfix"></div>
                 </div>
                 <script src="/js/imagezoom.js"></script>
@@ -228,20 +216,20 @@
     </div>
 </div>
 <div class="other-products products-grid">
-    <div class="container justify-content-between row">
+    <div class="container justify-content-center row">
         <header class="col-12">
             <h3 class="like text-center">محصولات مرتبط</h3>
         </header>
         @foreach (var item in ViewBag.OtherProducts as IEnumerable<AutoPartsStore.Infrastructure.ViewModels.ProductHomePageModel>)
         {
-            <div class="col-md-4 product simpleCart_shelfItem text-center">
-                <a href="single.html"><img src="/img/@item.Image" alt="" /></a>
-                <div class="mask">
-                    <a class="btn" href="single.html">جزئیات</a>
-                </div>
-                <a class="product_name" href="single.html">@item.Title</a>
-                <p><a class="item_add" href="#"><i></i> <span class="item_price">@item.Price.ToString("n0") ریال</span></a></p>
+        <div class="col-md-4 product simpleCart_shelfItem text-center">
+            <a href="/products/details/@item.Id"><img src="/img/@item.Image" alt="" /></a>
+            <div class="mask">
+                <a class="btn" href="/products/details/@item.Id">جزئیات</a>
             </div>
+            <a class="product_name" href="/products/details/@item.Id">@item.Title</a>
+            <p><a class="item_add" href="/card/add/@item.Id"><i></i> <span class="item_price">@item.Price.ToString("n0") ریال</span></a></p>
+        </div>
         }
         <div class="clearfix"></div>
     </div>

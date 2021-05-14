@@ -46,30 +46,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 <body>
     <!-- header-section-starts -->
-    <div class="header">
-        <div class="header-top-strip">
-            <div class="container">
-                <div class="header-top-left">
-                    <ul>
-                        <li><a href="account.html">ورود<span class="fas fa-sign-in"> </span></a></li>
-                        <li><a href="register.html">ساخت اکانت<span class="fas fa-user-plus"> </span></a></li>
-                        <li><a href="register.html">سلام عرفان خوش اومدی</a></li>
-                        <li><a href="register.html">خروج <i class="fas fa-sign-out-alt"></i></a></li>
-                    </ul>
-                </div>
-                <div class="header-right">
-                    <div class="cart box_1">
-                        <a href="checkout.html">
-                            <h3> <span> 125,000,000 ریال </span> (<span > 5 </span>)<img src="images/bag.png" alt=""></h3>
-                        </a>
-                        <p><a href="javascript:;" class="simpleCart_empty">سبد خرید</a></p>
-                        <div class="clearfix"> </div>
-                    </div>
-                </div>
-                <div class="clearfix"> </div>
-            </div>
-        </div>
-    </div>
+    <partial name="_UserNavbarPartial" />
     <!-- header-section-ends -->
     <div class="banner-top">
         <div class="container">
@@ -87,14 +64,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <li class="nav-item active">
                             <a class="nav-link" href="#">خانه <span class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">حساب کاربری</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 دسته بندی ها
                             </a>
-                            <partial name="_CategoriesInNavbar"/>
+                            <partial name="_CategoriesInNavbar" />
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0 col-12 col-md-auto">
@@ -113,7 +87,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <h6>عضو خبرنامه ما شوید</h6>
                 <div class="sub-left-right">
                     <form>
-                        <input type="text" value="ایمیل خود را وارد کنید" onfocus="this.value = '';"/>
+                        <input type="text" value="ایمیل خود را وارد کنید" onfocus="this.value = '';" />
                         <input type="submit" value="عضویت" />
                     </form>
                 </div>

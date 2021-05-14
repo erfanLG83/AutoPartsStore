@@ -1,0 +1,46 @@
+﻿<div class="header">
+    <div class="header-top-strip">
+        <div class="container">
+            <div class="header-top-left">
+                <ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        @if (User.IsInRole("مدیر"))
+                        {
+                            <li>
+                                <a href="/admin">
+                                    ورود به پنل ادمین
+                                </a>
+                            </li>
+                        }
+                        <li><a href="#">سلام @User.Claims.First(n => n.Type == System.Security.Claims.ClaimTypes.Name).Value خوش اومدی</a></li>
+                        <li>
+                            <a href="/account">حساب کاربری</a>
+                        </li>
+                        <li><a href="/account/signout">خروج <i class="fas fa-sign-out-alt"></i></a></li>
+                    }
+                    else
+                    {
+
+                        <li><a href="/login">ورود<span class="fas fa-sign-in"> </span></a></li>
+                        <li><a href="/register">ساخت اکانت<span class="fas fa-user-plus"> </span></a></li>
+                    }
+                </ul>
+            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="header-right">
+                    <div class="cart box_1">
+                        <a href="checkout.html">
+                            <h3> <span> 125,000,000 ریال </span> (<span> 5 </span>)<img src="images/bag.png" alt=""></h3>
+                        </a>
+                        <p><a href="javascript:;" class="simpleCart_empty">سبد خرید</a></p>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+            }
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
