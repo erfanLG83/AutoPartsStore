@@ -1,4 +1,6 @@
-﻿<div class="header">
+﻿@using Microsoft.EntityFrameworkCore;
+@inject AutoPartsStore.Persistence.ApplicationDbContext context
+<div class="header">
     <div class="header-top-strip">
         <div class="container">
             <div class="header-top-left">
@@ -24,7 +26,7 @@
                     {
 
                         <li><a href="/login">ورود<span class="fas fa-sign-in"> </span></a></li>
-                        <li><a href="/register">ساخت اکانت<span class="fas fa-user-plus"> </span></a></li>
+                        <li><a href="/account/register">ساخت اکانت<span class="fas fa-user-plus"> </span></a></li>
                     }
                 </ul>
             </div>
@@ -32,10 +34,20 @@
             {
                 <div class="header-right">
                     <div class="cart box_1">
-                        <a href="checkout.html">
-                            <h3> <span> 125,000,000 ریال </span> (<span> 5 </span>)<img src="images/bag.png" alt=""></h3>
+                        <a href="/cart">
+                            @{ 
+                                string userId = User.Claims.First(m => m.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+                                var products = context.ProductCards.Where(x => x.UserId == userId && !x.OrderId.HasValue).Include(x=>x.Product).AsNoTracking();
+                            }
+                            <h3> 
+                            <span id="cart-value">
+                                <b> @products.Sum(x => x.Product.Price).ToString("n0")</b> ریال 
+                            </span> 
+                            (<span id="cart-count"> @products.Count() </span>)
+                            <img src="images/bag.png" alt="">
+                            </h3>
                         </a>
-                        <p><a href="javascript:;" class="simpleCart_empty">سبد خرید</a></p>
+                        <p><a href="/cart" class="simpleCart_empty">سبد خرید</a></p>s
                         <div class="clearfix"> </div>
                     </div>
                 </div>

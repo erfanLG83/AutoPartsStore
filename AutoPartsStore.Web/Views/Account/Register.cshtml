@@ -1,0 +1,67 @@
+﻿@model AutoPartsStore.Infrastructure.ViewModels.Account.RegisterModel
+@{
+    ViewData["Title"] = "ثبت نام";
+}
+
+<div class="container mt-5 mb-5">
+    <div class="card bg-light col-lg-8 m-lg-auto ">
+        <div class="card-header">
+            <h4>ثبت نام در سایت</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Register" enctype="multipart/form-data" method="post">
+                <div class="row">
+                    <div asp-validation-summary="All" class="col-12 alert alert-warning"></div>
+                    <div class="form-group col-6">
+                        <label asp-for="FirstName">نام*</label>
+                        <input asp-for="FirstName" type="text" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-6">
+                        <label asp-for="LastName">نام خانوادگی*</label>
+                        <input asp-for="LastName" type="text" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-6">
+                        <label asp-for="UserName">نام کاربری*</label>
+                        <input asp-for="UserName" type="text" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-6">
+                        <label asp-for="Email">ایمیل*</label>
+                        <input asp-for="Email" type="email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-6">
+                        <label asp-for="Password">کلمه عبور*</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-6">
+                        <label asp-for="ConfirmPassword">تکرار کلمه عبور*</label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12 col-md-8">
+                        <label asp-for="CaptchaCode">کد امنیتی*</label>
+                        <input asp-for="CaptchaCode" type="text" class="form-control" />
+                        <span asp-validation-for="CaptchaCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12 col-md-4 align-items-center d-flex justify-content-center">
+                        <img src="/get-captcha-image" alt="کد امنیتی" width="100" height="36" />
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-outline-success float-right" type="submit">
+                            ثبت نام
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

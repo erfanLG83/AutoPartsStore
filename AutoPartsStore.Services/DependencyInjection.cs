@@ -10,6 +10,14 @@ namespace AutoPartsStore.Services
 {
     public static class DependencyInjection
     {
+        /// <summary>
+        /// Add Services Such a IEmailSender
+        /// </summary>
+        public static IServiceCollection AddServiceLayer(this IServiceCollection services)
+        {
+            services.AddScoped<IEmailSender, EmailSender>();
+            return services;
+        }
         public static IServiceCollection AddIdentityServices(this IServiceCollection services)
         {
             services.AddScoped<AppIdentityErrorDescriber>();

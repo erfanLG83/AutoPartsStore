@@ -2,6 +2,20 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+@if (ViewBag.Msg != null)
+{
+    <div class="alert alert-primary">
+        @if (ViewBag.Msg == "emailconfirm")
+        {
+            <p>ایمیلی حاوی لینک تایید برای شما ارسال شده . پس تایید ایمیل خود <a href="/login">ورود</a> کنید</p>
+        }
+        else if (ViewBag.Msg == "confirmorder")
+        {
+            <p>سفارش شما با موفقیت ثبت شد و در بازه 2 تا 4 روز به شما میرسد</p>
+            <p>شما میتوانید با شماره تلفن 093311111 در جریان ارسال باشید همچین در پنل کاربری خود وضعیت سفارش خود را مشاهده کنید</p>
+        }
+    </div>
+}
 <div class="banner">
     <div class="container">
         <div class="banner-bottom">
@@ -32,24 +46,24 @@
                     </ul>
                     <script src="js/responsiveslides.min.js"></script>
                     <script>
-                            // You can also use "$(window).load(function() {"
-                            $(function() {
-                                // Slideshow 4
-                                $("#slider4").responsiveSlides({
-                                    auto: true,
-                                    pager: true,
-                                    nav: false,
-                                    speed: 500,
-                                    namespace: "callbacks",
-                                    before: function() {
-                                        $('.events').append("<li>before event fired.</li>");
-                                    },
-                                    after: function() {
-                                        $('.events').append("<li>after event fired.</li>");
-                                    }
-                                });
-
+                        // You can also use "$(window).load(function() {"
+                        $(function () {
+                            // Slideshow 4
+                            $("#slider4").responsiveSlides({
+                                auto: true,
+                                pager: true,
+                                nav: false,
+                                speed: 500,
+                                namespace: "callbacks",
+                                before: function () {
+                                    $('.events').append("<li>before event fired.</li>");
+                                },
+                                after: function () {
+                                    $('.events').append("<li>after event fired.</li>");
+                                }
                             });
+
+                        });
                     </script>
                 </div>
                 <!--banner-->
@@ -100,7 +114,7 @@
                         <a class="btn" href="/products/details/@item.Id">جزئیات</a>
                     </div>
                     <a class="product_name" href="/products/details/@item.Id">@item.Title</a>
-                    <p><a class="item_add" href="/card/add/@item.Id"><i></i> <span class="item_price">@item.Price.ToString("n0") ریال</span></a></p>
+                    <p><a class="item_add" href="#" onclick="addToCart(@item.Id,@item.Price)"><i></i> <span class="item_price">@item.Price.ToString("n0") ریال</span></a></p>
                 </div>
             }
             <div class="clearfix"></div>
@@ -150,10 +164,13 @@
         </ul>
         <script type="text/javascript" src="js/jquery.flexisel.js"></script>
         <script type="text/javascript">
-                $(window).load(function() {
-                    $("#fixiselDemo3").flexisel();
+            $(window).load(function () {
+                $("#fixiselDemo3").flexisel();
 
-                });
+            });
         </script>
     </div>
 </div>
+@section Scripts{
+    <script src="/js/cart.js"></script>
+}

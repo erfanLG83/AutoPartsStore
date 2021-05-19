@@ -222,16 +222,19 @@
         </header>
         @foreach (var item in ViewBag.OtherProducts as IEnumerable<AutoPartsStore.Infrastructure.ViewModels.ProductHomePageModel>)
         {
-        <div class="col-md-4 product simpleCart_shelfItem text-center">
-            <a href="/products/details/@item.Id"><img src="/img/@item.Image" alt="" /></a>
-            <div class="mask">
-                <a class="btn" href="/products/details/@item.Id">جزئیات</a>
+            <div class="col-md-4 product simpleCart_shelfItem text-center">
+                <a href="/products/details/@item.Id"><img src="/img/@item.Image" alt="" /></a>
+                <div class="mask">
+                    <a class="btn" href="/products/details/@item.Id">جزئیات</a>
+                </div>
+                <a class="product_name" href="/products/details/@item.Id">@item.Title</a>
+                <p><a class="item_add" href="#" onclick="addToCart(@item.Id , @item.Price)"><i></i> <span class="item_price">@item.Price.ToString("n0") ریال</span></a></p>
             </div>
-            <a class="product_name" href="/products/details/@item.Id">@item.Title</a>
-            <p><a class="item_add" href="/card/add/@item.Id"><i></i> <span class="item_price">@item.Price.ToString("n0") ریال</span></a></p>
-        </div>
         }
         <div class="clearfix"></div>
     </div>
 </div>
 <!-- content-section-ends -->
+@section Scripts{
+    <script src="/js/cart.js"></script>
+}

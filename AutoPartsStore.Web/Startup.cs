@@ -25,19 +25,25 @@ namespace AutoPartsStore.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(op =>
+            {
+                op.CheckConsentNeeded = context => true;
+                op.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
+            });
             services.AddSession(options =>
             {
-                services.AddSession(options =>
-                {
-                    options.IdleTimeout = TimeSpan.FromMinutes(20);
-                    options.Cookie.HttpOnly = true;
-                });
                 options.IdleTimeout = TimeSpan.FromMinutes(20);
                 options.Cookie.HttpOnly = true;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/login";
             });
             services.AddDbContext<ApplicationDbContext>(op =>
                 op.UseSqlServer(@"Server=.;Database=AutoPartsStoreDB;trusted_Connection=True"));
             services.AddIdentityServices();
+            services.AddServiceLayer();
             services.AddSingleton<IFileWorker, FileWorker>(n=> {
                 var env = n.GetRequiredService<IWebHostEnvironment>();
                 return new FileWorker(env.WebRootPath);
@@ -58,6 +64,7 @@ namespace AutoPartsStore.Web
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseSession();
             //app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();

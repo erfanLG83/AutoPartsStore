@@ -20,14 +20,15 @@ namespace AutoPartsStore.Web.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IRepositoryBase<Product> _repository;
 
-        public HomeController(ILogger<HomeController> logger , ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context)
         {
             _context = context;
             _repository = new RepositoryBase<Product>(context);
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string msg=null)
         {
+            ViewBag.Msg = msg;
             IEnumerable<Product> products = await _repository.FindByConditionAsync(n => n.IsPublish && !n.IsDelete, n => n.OrderBy(m => m.PublishDate));
             return View(products.Select(
                 n=>new ProductHomePageModel { 

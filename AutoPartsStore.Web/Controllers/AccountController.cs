@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoPartsStore.Domain.Auth;
+﻿using AutoPartsStore.Domain.Auth;
 using AutoPartsStore.Infrastructure.ViewModels.Account;
 using AutoPartsStore.Services.Contract;
+using AutoPartsStore.Services.Features;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace AutoPartsStore.Web.Controllers
 {
@@ -14,17 +14,22 @@ namespace AutoPartsStore.Web.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IAppUserManager _userManager;
-        public AccountController(SignInManager<AppUser> signInManager, IAppUserManager userManager)
+        private readonly IEmailSender _emailSender;
+        public AccountController(SignInManager<AppUser> signInManager, IAppUserManager userManager, IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
+        #region Login
         [Route("login")]
+        [Route("Account/Login")]
         public IActionResult Login(string returnUrl = "/") => View(new LoginModel(returnUrl));
         [Route("login")]
+        [Route("Account/Login")]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Login(LoginModel loginModel) 
+        public async Task<IActionResult> Login(LoginModel loginModel)
         {
             if (ModelState.IsValid)
             {
@@ -45,16 +50,85 @@ namespace AutoPartsStore.Web.Controllers
                 }
                 else if (user == null)
                     ModelState.AddModelError("", "کاربری با این نام کاربری یا ایمیل پیدا نشد");
-                else if (user.EmailConfirmed)
-                    ModelState.AddModelError("", "ابتدا ایمیل خود را تایید کنید !");
+                else if (!user.EmailConfirmed)
+                {
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var href = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host + HttpContext.Request.PathBase}/account/confirmemail?email={user.Email}&token={token}";
+                    await _emailSender.SendEmailAsync(user.Email, "تایید ایمیل - اتوایران",
+                        @$"
+                            <p>برای تایید ایمیل خود <a href='{href}'>کلیک کنید</a .<p>
+                        ");
+                    ModelState.AddModelError("", "ابتدا ایمیل خود را تایید کنید.ایمیل خود را برای تایید چک کنید");
+                }
 
             }
             return View(loginModel);
+        }
+        #endregion
+        #region Register
+        public IActionResult Register() => View();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (Captcha.ValidateCaptchaCode(model.CaptchaCode, HttpContext))
+                {
+                    var user = new AppUser
+                    {
+                        Email = model.Email,
+                        UserName = model.UserName,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                    };
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var href = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host + HttpContext.Request.PathBase}/account/confirmemail?email={user.Email}&token={token}";
+                        await _emailSender.SendEmailAsync(user.Email, "تایید ایمیل - اتوایران",
+                            @$"
+                            <p>برای تایید ایمیل خود <a href='{href}'>کلیک کنید</a .<p>
+                        ");
+                        return LocalRedirect("/home/index?msg=emailconfirm");
+                    }
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError(item.Code, item.Description);
+                    }
+                }
+                else
+                    ModelState.AddModelError("", "کد امنیتی اشتباه است");
+            }
+            return View(model);
+        }
+        #endregion
+
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || token == null)
+                return NotFound();
+            await _userManager.ConfirmEmailAsync(user, token);
+            await _signInManager.SignInAsync(user, true);
+            return LocalRedirect("/");
         }
         public async Task<IActionResult> SignOut()
         {
             await _signInManager.SignOutAsync();
             return LocalRedirect("/");
+        }
+        [Route("get-captcha-image")]
+        public IActionResult GetCaptchaImage()
+        {
+            int width = 100;
+            int height = 36;
+            var captchaCode = Captcha.GenerateCaptchaCode();
+            var result = Captcha.GenerateCaptchaImage(width, height, captchaCode);
+            HttpContext.Session.SetString("CaptchaCode", result.CaptchaCode);
+            Stream s = new MemoryStream(result.CaptchaByteData);
+            return new FileStreamResult(s, "image/png");
         }
     }
 }

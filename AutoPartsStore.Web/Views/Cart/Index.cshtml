@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "سبد خرید";
 }
-@section Head{ 
+@section Head{
     <link href="/css/cart.css" rel="stylesheet" />
 }
 <div class="container">
@@ -15,7 +15,7 @@
                             <div class="col">
                                 <h4><b>سبد خرید</b></h4>
                             </div>
-                            <div class="col align-self-center text-right text-muted">@Model.Count() محصول</div>
+                            <div class="col align-self-center text-right text-muted"><span>@Model.Count()</span> محصول</div>
                         </div>
                     </div>
                     @foreach (var item in Model)
@@ -28,7 +28,7 @@
                                     <div class="row">@item.Title</div>
                                 </div>
                                 <div class="col"> <a onclick="changeCount(@item.Id,@item.Price,-1)" href="#">-</a><a href="#" class="border">@item.Count</a><a onclick="changeCount(@item.Id,@item.Price)" href="#">+</a> </div>
-                                <div class="col  product-total-price"><span>@item.Price.ToString("n0")</span>ریال <span onclick="removeProduct(@item.Id)" class="close">&#10005;</span></div>
+                                <div class="col  product-total-price"><span>@((item.Price * item.Count).ToString("n0"))</span>ریال <span onclick="removeProduct(@item.Id)" class="close">&#10005;</span></div>
                             </div>
                         </div>
                     }
@@ -43,8 +43,8 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col pl-0">@Model.Count()</div>
-                        <div class="col text-right">@ViewBag.TotalPrice</div>
+                        <div class="col count pl-0">@Model.Count()</div>
+                        <div class="col price text-right">@ViewBag.TotalPrice</div>
                     </div>
                     <form>
                         <p>نوع پرداخت</p> <select>
@@ -55,15 +55,18 @@
                     </form>
                     <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
                         <div class="col">مبلغ پرداختی</div>
-                        <div class="col text-right">@ViewBag.TotalPrice</div>
-                    </div> <button class="btn">ادامه</button>
+                        <div id="final-price" class="col text-right">@ViewBag.TotalPrice</div>
+                    </div> <button onclick="showModal()" class="btn">ادامه</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Modal -->
+<partial name="_OrderConfirmPartial" model="ViewBag.OrderConfirm" />
+@section Scripts{
 
-@section Scripts{ 
+    <partial name="_ValidationScriptsPartial" />
     <script>
         let baseCount = @Model.Count();
         function addCommas(nStr)
@@ -74,6 +77,9 @@
                 nStr = nStr.replace(rgx, '$1' + ',' + '$2');
             }
             return nStr;
+        }
+        function toNumber(str) {
+            return Number(str.replaceAll(',', ''));
         }
         const changeList = {
             countChanges: [],
@@ -138,15 +144,27 @@
                     .then(d => {
                         console.log(d);
                         if (d.success === true) {
-                            $('.cart-container .align-self-center.text-right.text-muted').html(baseCount - changeList.removeChanges.length);
+                            $('.cart-container .align-self-center.text-right.text-muted span').html(baseCount - changeList.removeChanges.length);
                             baseCount = baseCount - changeList.removeChanges.length;
                             changeList.removeChanges = [];
                         }
                         else
                             alert('مشکلی در هنگام ذخیره اطلاعات پیش اومد')
                     }).catch(err => console.log(err));
-                hideChangeButtons();
             }
+            let sum = 0;
+            let count = 0;
+            document.querySelectorAll('div[data-row-id] .product-total-price span:first-child').forEach(e => {
+                count++;
+                sum += toNumber(e.innerHTML);
+            });
+            sum = addCommas(sum);
+            $('#cart-count').html(count);
+            $('#cart-value b').html(sum);
+            $('.summary .price').html(sum+ 'ریال');
+            $('.summary .count').html(count);
+            $('#final-price').html(sum + 'ریال');
+            hideChangeButtons();
         }
         const discardChanges = () => {
             if (changeList.countChanges.length > 0) {
@@ -172,6 +190,9 @@
             });
             elem.remove();
             showChangeButtons();
+        }
+        const showModal = () => {
+            $("#exampleModalCenter").modal();
         }
     </script>
 }
