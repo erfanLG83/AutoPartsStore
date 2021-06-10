@@ -53,7 +53,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
                 <div class="logo navbar-brand">
-                    <h1><a href="index.html"><span>A</span> utoIran</a></h1>
+                    <h1><a href="/"><span>A</span> utoIran</a></h1>
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -64,17 +64,26 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <li class="nav-item active">
                             <a class="nav-link" href="/">خانه <span class="sr-only">(current)</span></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/products">محصولات </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 دسته بندی ها
                             </a>
                             <partial name="_CategoriesInNavbar" />
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/products">تماس با ما</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/products">درباره ما</a>
+                        </li>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0 col-12 col-md-auto">
-                        <input class="form-control mr-sm-2" type="search" placeholder="جستجو کنید..." aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">جستجو</button>
-                    </form>
+                    <div class="form-inline my-2 my-lg-0 col-12 col-md-auto">
+                        <input id="searchNavbar" class="form-control mr-sm-2" type="search" placeholder="جستجو کنید..." aria-label="Search">
+                        <button onclick="searchConfirm()" class="btn btn-outline-success my-2 my-sm-0" type="submit">جستجو</button>
+                    </div>
                 </div>
             </nav>
             <!--/.navbar-->
@@ -99,56 +108,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="container">
             <div class="footer_top">
                 <div class="span_of_4 row">
-                    <div class="col-md-3 span1_of_4">
-                        <h4>Shop</h4>
+                    <div class="col-md-6 span1_of_4">
+                        <h4>فروشگاه</h4>
                         <ul class="f_nav">
-                            <li><a href="#">new arrivals</a></li>
-                            <li><a href="#">men</a></li>
-                            <li><a href="#">women</a></li>
-                            <li><a href="#">accessories</a></li>
-                            <li><a href="#">kids</a></li>
-                            <li><a href="#">brands</a></li>
-                            <li><a href="#">trends</a></li>
-                            <li><a href="#">sale</a></li>
-                            <li><a href="#">style videos</a></li>
+                            <li><a href="/products">محصولات</a></li>
+                            <li><a href="/products?filtertype=4">جدیدترین ها</a></li>
                         </ul>
                     </div>
-                    <div class="col-md-3 span1_of_4">
-                        <h4>help</h4>
+                    <div class="col-md-6 span1_of_4">
+                        <h4>درباره ما</h4>
                         <ul class="f_nav">
-                            <li><a href="#">frequently asked  questions</a></li>
-                            <li><a href="#">men</a></li>
-                            <li><a href="#">women</a></li>
-                            <li><a href="#">accessories</a></li>
-                            <li><a href="#">kids</a></li>
-                            <li><a href="#">brands</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3 span1_of_4">
-                        <h4>account</h4>
-                        <ul class="f_nav">
-                            <li><a href="account.html">login</a></li>
-                            <li><a href="register.html">create an account</a></li>
-                            <li><a href="#">create wishlist</a></li>
-                            <li><a href="checkout.html">my shopping bag</a></li>
-                            <li><a href="#">brands</a></li>
-                            <li><a href="#">create wishlist</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-md-3 span1_of_4">
-                        <h4>popular</h4>
-                        <ul class="f_nav">
-                            <li><a href="#">new arrivals</a></li>
-                            <li><a href="#">men</a></li>
-                            <li><a href="#">women</a></li>
-                            <li><a href="#">accessories</a></li>
-                            <li><a href="#">kids</a></li>
-                            <li><a href="#">brands</a></li>
-                            <li><a href="#">trends</a></li>
-                            <li><a href="#">sale</a></li>
-                            <li><a href="#">style videos</a></li>
-                            <li><a href="#">login</a></li>
-                            <li><a href="#">brands</a></li>
+                            <li><a href="#">کانال تلگرام ما</a></li>
+                            <li><a href="#">صفحه اینستگرام ما</a></li>
+                            <li><a href="#">شماره پشتیبانی 093362925</a></li>
                         </ul>
                     </div>
                     <div class="clearfix"></div>
@@ -158,14 +130,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <img src="images/cards.jpg" alt="" />
             </div>
             <div class="copyright text-center">
-                <p>© 2015 Eshop. All Rights Reserved | Design by <a href="http://w3layouts.com">  W3layouts</a></p>
+                <p>تمامی حقوق این سایت متعلق به <b>AutoIran</b> است</a></p>
             </div>
         </div>
     </div>
     <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
     @await RenderSectionAsync("Scripts", false)
+    <script>
+        const isLogin = "@User.Identity.IsAuthenticated.ToString().ToLower()";
+        function searchConfirm() {
+            location.replace('/products?search=' + $('#searchNavbar').val());
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
-
 </html>

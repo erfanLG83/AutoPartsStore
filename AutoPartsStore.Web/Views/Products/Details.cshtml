@@ -7,8 +7,9 @@
 <!-- content-section-starts -->
 <div class="container">
     <div class="products-page row">
-        <div class="col-md-9 row col-12 ">
+        <div class="row col-12 ">
             <div class="col-md-7 dress-info">
+
                 <div class="row">
                     <h3 class="col-12">
                         @Model.Title
@@ -19,8 +20,7 @@
                     <p>@Model.Descrioption</p>
                 </div>
                 <div class="mt-3">
-                    <a class="btn mr-2 float-left btn-outline-secondary" href="#">افزودن به سبد خرید</a>
-                    <a class="btn mr-2 float-left btn-outline-info" href="#">همین الان بخرید</a>
+                    <a class="btn mr-2 float-left btn-outline-secondary" onclick="addToCart(@Model.Id , @Model.Price)" href="#">افزودن به سبد خرید</a>
                     <div class="clearfix"></div>
                 </div>
                 <script src="/js/imagezoom.js"></script>
@@ -167,48 +167,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-        </div>
-
-        <div class="col-md-3 col-12">
-            <div class="product-listy">
-                <div class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action active">
-                        دسته بندی ها
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                </div>
-            </div>
-            <div class="latest-bis">
-                <img src="images/l4.jpg" class="img-responsive" alt="" />
-                <div class="offer">
-                    <p>40%</p>
-                    <small>ویژه</small>
-                </div>
-            </div>
-            <div class="tags">
-                <h4 class="tag_head">لینک های کوتاه</h4>
-                <ul class="tags_links">
-                    <li><a href="#">جدیدترین محصولات</a></li>
-                    <li><a href="#">تخفیف خورده ها</a></li>
-                    <li><a href="#">مخصوص پراید</a></li>
-                    <li><a href="#">Theme</a></li>
-                    <li><a href="#">Men</a></li>
-                    <li><a href="#">Women</a></li>
-                    <li><a href="#">Equipment</a></li>
-                    <li><a href="#">Best</a></li>
-                    <li><a href="#">Accessories</a></li>
-                    <li><a href="#">Men</a></li>
-                    <li><a href="#">Apparel</a></li>
-                    <li><a href="#">Super</a></li>
-                    <li><a href="#">Duper</a></li>
-                    <li><a href="#">Theme</a></li>
-                    <li><a href="#">Responsive</a></li>
-                    <li><a href="#">Women</a></li>
-                    <li><a href="#">Equipment</a></li>
-                </ul>
-
             </div>
 
         </div>

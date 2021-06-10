@@ -25,17 +25,21 @@ namespace AutoPartsStore.Web.Controllers
             _context = context;
             _repository = new RepositoryBase<Product>(context);
         }
-
         public async Task<IActionResult> Index(string msg=null)
         {
             ViewBag.Msg = msg;
-            IEnumerable<Product> products = await _repository.FindByConditionAsync(n => n.IsPublish && !n.IsDelete, n => n.OrderBy(m => m.PublishDate));
+            IEnumerable<Product> products = await _repository
+                .FindByConditionAsync(n => n.IsPublish 
+                    && !n.IsDelete 
+                    &&n.Stock >0,
+                    n => n.OrderBy(m => m.PublishDate),x=>x.Category);
             return View(products.Select(
                 n=>new ProductHomePageModel { 
                     Id = n.Id,
                     Price = n.Price,
                     Title =n.Title,
-                    Image = n.ImageName
+                    Image = n.ImageName,
+                    Category = n.Category.Title
                 }));
         }
     }

@@ -1,11 +1,13 @@
 ﻿using AutoPartsStore.Domain.Entities;
 using AutoPartsStore.Infrastructure.ViewModels.Cart;
 using AutoPartsStore.Persistence;
+using AutoPartsStore.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,12 +19,12 @@ namespace AutoPartsStore.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<CartController> _logger;
-        public CartController(ApplicationDbContext context,ILogger<CartController> logger)
+        public CartController(ApplicationDbContext context, ILogger<CartController> logger)
         {
             _logger = logger;
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string[] errors = null)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var products = await _context.ProductCards.Include(n => n.Product).ThenInclude(n => n.Category).Where(n => n.UserId == userId && !n.OrderId.HasValue).ToListAsync();
@@ -30,10 +32,21 @@ namespace AutoPartsStore.Web.Controllers
             var user = await _context.Users.FirstAsync(n => n.Id == userId);
             ViewBag.OrderConfirm = new OrderConfirmModel
             {
-                Address=user.Address,
-                Phone=user.PhoneNumber,
-                PostalCode=user.PostalCode
+                Address = user.Address,
+                Phone = user.PhoneNumber,
+                PostalCode = user.PostalCode
             };
+            if (errors != null)
+                ViewBag.Errors = errors.Select(x =>
+                {
+                    var values = x.Split("...");
+                    return new CartError
+                    {
+                        ProductTitle=values[0],
+                        OrderCount=int.Parse(values[1]),
+                        ProductStock=int.Parse(values[2])
+                    };
+                });
             return View(products.Select(n => new CartProductModel
             {
                 Id = n.Id,
@@ -44,15 +57,18 @@ namespace AutoPartsStore.Web.Controllers
                 CategoryTitle = n.Product.Category.Title
             }));
         }
+
         public async Task<IActionResult> Add(int id)
         {
             bool success = false;
+            bool firstTimeAdd = false;
             if (await _context.Products.AnyAsync(x => x.Id == id))
             {
                 var userId = User.Claims.First(n => n.Type == ClaimTypes.NameIdentifier).Value;
                 var product = await _context.ProductCards.FirstOrDefaultAsync(x => x.UserId == userId && !x.OrderId.HasValue && x.ProductId == id);
                 if (product == null)
                 {
+                    firstTimeAdd = true;
                     await _context.ProductCards.AddAsync(new Domain.Entities.ProductCard
                     {
                         Count = 1,
@@ -67,7 +83,7 @@ namespace AutoPartsStore.Web.Controllers
                 await _context.SaveChangesAsync();
                 success = true;
             }
-            return Json(new { Success = success });
+            return Json(new { Success = success, FirstTimeAdd = firstTimeAdd });
         }
         [HttpPost]
         public async Task<IActionResult> ChangeCounts([FromBody] ChangeCountModel[] changes)
@@ -111,8 +127,19 @@ namespace AutoPartsStore.Web.Controllers
                 var user = await _context.Users.FirstAsync(n => n.Id == userId);
                 var cartProducts = await _context.ProductCards
                     .Where(x => x.UserId == user.Id && !x.OrderId.HasValue)
-                    .Include(x=>x.Product)
+                    .Include(x => x.Product)
                     .ToListAsync();
+                string errors = "";
+                foreach (var item in cartProducts)
+                {
+                    if (item.Count > item.Product.Stock)
+                        errors += $"errors={item.Product.Title}...{item.Count}...{item.Product.Stock}&";
+                    
+                }
+                if (errors.Any())
+                {
+                    return LocalRedirect("/cart?"+errors);
+                }
                 Order order = new Order
                 {
                     Date = DateTime.Now,
@@ -120,20 +147,25 @@ namespace AutoPartsStore.Web.Controllers
                     UserId = user.Id,
                     StatusId = 1,
                     PostalCode = user.PostalCode,
-                    TotalPrice = cartProducts.Sum(x => x.Product.Price)
+                    TotalPrice = cartProducts.Sum(x => x.Product.Price * x.Count)
                 };
                 var orderAdded = await _context.AddAsync(order);
                 await _context.SaveChangesAsync();
                 user.PhoneNumber = confirmModel.Phone;
                 user.Address = confirmModel.Address;
                 user.PostalCode = confirmModel.PostalCode;
-               
-                _context.UpdateRange(cartProducts.Select(x => {
+
+                _context.UpdateRange(cartProducts.Select(x =>
+                {
                     x.SoldPrice = x.Product.Price;
                     x.OrderId = order.Id;
                     return x;
                 }));
                 _context.Update(user);
+                foreach (var item in cartProducts)
+                {
+                    _context.Products.First(x => x.Id == item.ProductId).Stock -= item.Count;
+                }
                 await _context.SaveChangesAsync();
                 return LocalRedirect("/Home/Index?msg=confirmorder");
             }

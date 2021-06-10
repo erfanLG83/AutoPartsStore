@@ -7,7 +7,9 @@ using AutoPartsStore.Domain.Services;
 using AutoPartsStore.Infrastructure.Repositories;
 using AutoPartsStore.Infrastructure.ViewModels;
 using AutoPartsStore.Persistence;
+using AutoPartsStore.Services.Features;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsStore.Web.Controllers
 {
@@ -51,6 +53,69 @@ namespace AutoPartsStore.Web.Controllers
                 Title = product.Title,
                 Stock = product.Stock
             });
+        }
+        [Route("Products")]
+        public async Task<IActionResult> Index(ProductsFilterModel filterModel)
+        {
+            int count = 0;
+            IEnumerable<Product> products = await _context.Products
+                .Where(x => !x.IsDelete && x.IsPublish && x.Stock >0)
+                .ToListAsync(); ;
+            if (filterModel == null)
+            {
+                filterModel = new ProductsFilterModel();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(filterModel.Search))
+                    products = products.Where(x => x.Title.Contains(filterModel.Search));
+                if (filterModel.CategoriesId.Any())
+                    products = products.Where(x => filterModel.CategoriesId.Any(n => n == x.CategoryId));
+                switch ((OrderBy?) filterModel.FilterType)
+                {
+                    case null:
+                        break;
+                    case OrderBy.NoOrder:
+                        break;
+                    case OrderBy.RisingPrice:
+                        products = products.OrderBy(x => x.Price).ToList();
+                        break;
+                    case OrderBy.DownwardPrice:
+                        products = products.OrderByDescending(x => x.Price).ToList();
+                        break;
+                    case OrderBy.RisingDate:
+                        products = products.OrderBy(x => x.PublishDate).ToList();
+                        break;
+                    case OrderBy.DownwarDate:
+                        products = products.OrderByDescending(x => x.PublishDate).ToList();
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            var model = Pagination
+                .GetData<Product>(products, ref count, 5, filterModel.Index)
+                .Select(x => new ProductSingleModel
+                {
+                    Title = x.Title,
+                    Price = x.Price.ToString("n0"),
+                    Descrioption = x.Description,
+                    Image = x.ImageName,
+                    Id=x.Id
+                }) ;
+            count = (count % 5 == 0) ? count / 5 : (count / 5) + 1;
+            string form = "";
+            foreach (var item in filterModel.CategoriesId)
+            {
+                form += "categoriesId="+item+"&";
+            }
+            if (filterModel.FilterType.HasValue)
+                form += "filtertype=" + filterModel.FilterType.Value;
+            ViewBag.FilterModel = filterModel;
+            ViewBag.Categories = await _context.Categories.ToListAsync();
+            ViewBag.Pagination = new Pagination(count, filterModel.Index, 5, $"/products?search={filterModel.Search}&{form}");
+            return View(model);
         }
     }
 }

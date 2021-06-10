@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AutoPartsStore.Web.Controllers
@@ -81,17 +82,21 @@ namespace AutoPartsStore.Web.Controllers
                         UserName = model.UserName,
                         FirstName = model.FirstName,
                         LastName = model.LastName,
+                        // remove if send email confirm
+                        EmailConfirmed = true
                     };
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var href = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host + HttpContext.Request.PathBase}/account/confirmemail?email={user.Email}&token={token}";
-                        await _emailSender.SendEmailAsync(user.Email, "تایید ایمیل - اتوایران",
-                            @$"
-                            <p>برای تایید ایمیل خود <a href='{href}'>کلیک کنید</a .<p>
-                        ");
-                        return LocalRedirect("/home/index?msg=emailconfirm");
+                        /* در حال حاضر بدلیل مشکلاتی ایمیل تایید ارسال نمیشود ! */
+                        //var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        //var href = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host + HttpContext.Request.PathBase}/account/confirmemail?email={user.Email}&token={token}";
+                        //await _emailSender.SendEmailAsync(user.Email, "تایید ایمیل - اتوایران",
+                        //    @$"
+                        //    <p>برای تایید ایمیل خود <a href='{href}'>کلیک کنید</a .<p>
+                        //");
+                        await _signInManager.SignInAsync(user, true);
+                        return LocalRedirect("/");
                     }
                     foreach (var item in result.Errors)
                     {
@@ -104,7 +109,19 @@ namespace AutoPartsStore.Web.Controllers
             return View(model);
         }
         #endregion
-
+        #region AccessDenied
+        public IActionResult AccessDenied(string returnUrl = "/")
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
+        public async Task<IActionResult> Relogin(string returnUrl = "/")
+        {
+            var user = await _userManager.FindByIdAsync(User.Claims.First(x => x.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value);
+            await _signInManager.RefreshSignInAsync(user);
+            return LocalRedirect(returnUrl);
+        }
+        #endregion
         public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
             var user = await _userManager.FindByEmailAsync(email);

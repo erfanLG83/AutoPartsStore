@@ -16,6 +16,16 @@
                                 <h4><b>سبد خرید</b></h4>
                             </div>
                             <div class="col align-self-center text-right text-muted"><span>@Model.Count()</span> محصول</div>
+                            @if(ViewBag.Errors != null || ViewBag.Errors.Any())
+                            {
+                                <div class="alert alert-warning col-12">
+                                    @foreach (var item in ViewBag.Errors as IEnumerable<CartError>)
+                                    {
+                                        <p>@($"تعداد کالا های موجود از محصول '{item.ProductTitle}' {item.ProductStock} هست اما شما {item.OrderCount} را سفارش داده اید \n . لطفا تعداد سفارش خود را کاهش دهید یا با ما تماس کنید تا زمان موجود شدن محصول به میزان نیاز شما را اطلاع دهیم")</p>
+                                        <hr/>
+                                    }
+                                </div>
+                            }
                         </div>
                     </div>
                     @foreach (var item in Model)

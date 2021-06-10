@@ -10,10 +10,12 @@ using AutoPartsStore.Domain.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoPartsStore.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "مدیر")]
     public class ProductsController : Controller
     {
         private readonly IFileWorker _fileWorker;

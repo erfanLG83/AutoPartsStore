@@ -102,7 +102,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        <div class="products-grid row justify-content-between">
+        @*<div class="products-grid row justify-content-between">
             <header class="col-12">
                 <h3 class="head text-center">آخرین محصولات</h3>
             </header>
@@ -118,58 +118,43 @@
                 </div>
             }
             <div class="clearfix"></div>
+        </div>*@
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+
+                    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                        <div class="card">
+                            <a class="" href="/products/details/@item.Id">
+                                <img height="200" class="card-img" src="/img/@item.Image" alt="@item.Title">
+                                @*<div class="card-img-overlay d-flex justify-content-end">
+                                    <a href="#" class="card-link text-danger like">
+                                        <i class="fas fa-heart"></i>
+                                    </a>
+                                </div>*@
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a class="text-secondary @(item.Title.Length < 24 ? "h-51" : "")" href="/products/details/@item.Id">
+                                        @item.Title
+                                    </a>
+                                </h5>
+                                <span class="card-subtitle text-muted">@item.Category</span>
+                                <div>
+                                    <div class="w-100 text-success"><h5 class="mt-4">@item.Price.ToString("n0") ریال</h5></div>
+                                    <button onclick="addToCart(@item.Id , @item.Price)" class="btn btn-danger mt-3 float-right">
+                                        <i class="fas fa-shopping-cart"></i>افزودن سبد خرید
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 
-</div>
-<div class="other-products">
-    <div class="container">
-        <h3 class="like text-center">محصولات ویژه</h3>
-        <ul style="display: none;" id="flexiselDemo3">
-            <li>
-                <a href="single.html"><img src="images/l1.jpg" class="img-responsive" alt="" /></a>
-                <div class="product liked-product simpleCart_shelfItem">
-                    <a class="like_name" href="single.html">perfectly simple</a>
-                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$759</span></a></p>
-                </div>
-            </li>
-            <li>
-                <a href="single.html"><img src="images/l2.jpg" class="img-responsive" alt="" /></a>
-                <div class="product liked-product simpleCart_shelfItem">
-                    <a class="like_name" href="single.html">praising pain</a>
-                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$699</span></a></p>
-                </div>
-            </li>
-            <li>
-                <a href="single.html"><img src="images/l3.jpg" class="img-responsive" alt="" /></a>
-                <div class="product liked-product simpleCart_shelfItem">
-                    <a class="like_name" href="single.html">Neque porro</a>
-                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$329</span></a></p>
-                </div>
-            </li>
-            <li>
-                <a href="single.html"><img src="images/l4.jpg" class="img-responsive" alt="" /></a>
-                <div class="product liked-product simpleCart_shelfItem">
-                    <a class="like_name" href="single.html">equal blame</a>
-                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$499</span></a></p>
-                </div>
-            </li>
-            <li>
-                <a href="single.html"><img src="images/l5.jpg" class="img-responsive" alt="" /></a>
-                <div class="product liked-product simpleCart_shelfItem">
-                    <a class="like_name" href="single.html">perfectly simple</a>
-                    <p><a class="item_add" href="#"><i></i> <span class=" item_price">$649</span></a></p>
-                </div>
-            </li>
-        </ul>
-        <script type="text/javascript" src="js/jquery.flexisel.js"></script>
-        <script type="text/javascript">
-            $(window).load(function () {
-                $("#fixiselDemo3").flexisel();
-
-            });
-        </script>
-    </div>
 </div>
 @section Scripts{
     <script src="/js/cart.js"></script>

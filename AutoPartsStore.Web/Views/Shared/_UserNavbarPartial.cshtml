@@ -12,7 +12,7 @@
                         {
                             <li>
                                 <a href="/admin">
-                                    ورود به پنل ادمین
+                                    ورود به پنل مدیر
                                 </a>
                             </li>
                         }
@@ -41,7 +41,7 @@
                             }
                             <h3> 
                             <span id="cart-value">
-                                <b> @products.Sum(x => x.Product.Price).ToString("n0")</b> ریال 
+                                <b> @products.Sum(x => x.Product.Price * x.Count).ToString("n0")</b> ریال 
                             </span> 
                             (<span id="cart-count"> @products.Count() </span>)
                             <img src="images/bag.png" alt="">

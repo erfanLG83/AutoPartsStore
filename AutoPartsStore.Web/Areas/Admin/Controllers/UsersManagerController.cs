@@ -3,6 +3,7 @@ using AutoPartsStore.Infrastructure.Admin.UsersManager;
 using AutoPartsStore.Persistence;
 using AutoPartsStore.Services.Contract;
 using AutoPartsStore.Services.Features;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 namespace AutoPartsStore.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "مدیر")]
     public class UsersManagerController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -37,7 +39,7 @@ namespace AutoPartsStore.Web.Areas.Admin.Controllers
             allUsers = allUsers.Where(n=>!n.IsDeleted);
             IEnumerable<AppUser> users = Pagination.GetData<AppUser>(allUsers, ref count, row, index);
             int pageCount = count % row == 0 ? count / row : (count / row) + 1;
-            ViewBag.Pagination = new Pagination(Url, pageCount, index, row, action: "Index", controller: "UsersManager");
+            ViewBag.Pagination = new Pagination(pageCount, index, row,"/admin/usersmanager");
             int rowCounter = row * (index - 1);
             List<UserViewModel> model = new List<UserViewModel>();
             foreach (var item in users)

@@ -10,12 +10,14 @@ using AutoPartsStore.Infrastructure.Repositories;
 using AutoPartsStore.Persistence;
 using AutoPartsStore.Services.Contract;
 using AutoPartsStore.Services.Features;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsStore.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "مدیر")]
     public class OrdersManagerController : Controller
     {
         private readonly IFileWorker _fileWorker;

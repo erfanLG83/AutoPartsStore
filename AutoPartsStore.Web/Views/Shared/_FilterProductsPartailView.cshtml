@@ -1,0 +1,49 @@
+﻿@using AutoPartsStore.Infrastructure.ViewModels
+@model ProductsFilterModel
+<form action="/products">
+    <div class="new-product-top">
+        <div class=" form-group row">
+            <input type="search" asp-for="Search" class="form-control col-8" placeholder="جستجو کنید ..." id="">
+            <button type="submit" class="btn btn-primary ml-2 col-2">فیلتر سازی</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label class="mb-2">مرتب سازی بر اساس</label>
+                <select asp-for="FilterType" class="form-control">
+                    <option value="">
+                    </option>
+                    <option value="@( (int)OrderBy.RisingPrice)">
+                        قیمت (سعود)
+                    </option>
+                    <option value="@( (int)OrderBy.DownwardPrice)">
+                        قیمت (نزولی)
+                    </option>
+                    <option value="@( (int)OrderBy.RisingDate)">
+                        تاریخ انتشار (سعودی)
+                    </option>
+                    <option value="@( (int)OrderBy.DownwarDate)">
+                        تاریخ انتشار (نزولی)
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="list-group col-6">
+            <a href="#" class="list-group-item list-group-item-action active">
+                دسته بندی ها
+            </a>
+            @foreach (var item in ViewBag.Categories as IEnumerable<AutoPartsStore.Domain.Entities.Category>)
+            {
+                <label class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                    @item.Title
+                    <input type="checkbox" name="CategoriesId" @(Model.CategoriesId.Any(x => x == item.Id) ? "checked" : "") value="@item.Id">
+                </label>
+            }
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</form>
+@section Scripts{
+    <script src="/js/cart.js"></script>
+}

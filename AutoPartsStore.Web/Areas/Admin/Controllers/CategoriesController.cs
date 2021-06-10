@@ -9,10 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 using AutoPartsStore.Domain.Services;
 using AutoPartsStore.Services.Features;
 using AutoPartsStore.Infrastructure.Admin.Categories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoPartsStore.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="مدیر")]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
